@@ -1,12 +1,3 @@
-/*
-CREATE TABLE Pet_Owners (
-userid VARCHAR(32) PRIMARY KEY,
-password VARCHAR(32) NOT NULL,
-name VARCHAR(128) NOT NULL,
-email VARCHAR(128) NOT NULL,
-description TEXT
-);
-*/
 INSERT INTO Users values ('xiexin94', 'password', 'XIE XIN', 'xiexin2011@gmail.com', '7767 Bishan Road', 'both', 'Hi! I love dogs. My favourite breed is Golden Retreiver.');
 INSERT INTO Users values ('huangran94', 'password', 'HUANG RAN', 'huangran1991@yahoo.com', '4 Toa Payoh Street', 'both', 'Hi! I love dogs. My favourite breed is Dalmatian.');
 INSERT INTO Users values ('gohengchye94', 'password', 'GOH ENG CHYE', 'gohengchye1992@msn.com', '95447 Balestier Avenue', 'petowner', 'Hi! I love dogs. My favourite breed is Chihuahua.');

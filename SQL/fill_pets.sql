@@ -1,15 +1,3 @@
-/*
-CREATE TABLE Pets (
-petid SERIAL PRIMARY KEY,      
-owner VARCHAR(32) REFERENCES Pet_Owners(userid),
-name VARCHAR(128) NOT NULL,
-age INTEGER NOT NULL,
-breed VARCHAR(128),
-gender VARCHAR(10) CHECK(gender = 'Male' OR gender='Female'),
-description TEXT
-);
-*/
-
 INSERT INTO Pets(owner, name, age, breed, gender, description) values ('xiexin94', 'Max', 5, 'Golden Retreiver', 'Male', 'Friendly, tame');
 INSERT INTO Pets(owner, name, age, breed, gender, description) values ('huangran94', 'Bailey', 3, 'German Shepherd', 'Male', 'Quiet, tame');
 INSERT INTO Pets(owner, name, age, breed, gender, description) values ('gohengchye94', 'Charlie', 7, 'Basset Hound', 'Male', 'Loud, aggresive');
