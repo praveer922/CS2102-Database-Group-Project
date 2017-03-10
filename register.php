@@ -36,7 +36,7 @@
  </nav>
 
 <?php
-$dbconn = pg_connect("host=localhost port=5432 dbname=postgres user=postgres password=Prav33r1234")
+$dbconn = pg_connect("postgres://plwneqlk:-2HZ6tyCgzUN7vQTK8m0FBkUlQOZ6brW@babar.elephantsql.com:5432/plwneqlk")
     or die('Could not connect: ' . pg_last_error());
 ?>
  

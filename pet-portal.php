@@ -41,7 +41,7 @@
 </td> </tr>
 
 <?php
-$dbconn = pg_connect("host=localhost port=9000 dbname=postgres user=postgres password=password")
+$dbconn = pg_connect("postgres://plwneqlk:-2HZ6tyCgzUN7vQTK8m0FBkUlQOZ6brW@babar.elephantsql.com:5432/plwneqlk")
     or die('Could not connect: ' . pg_last_error());
 
 $query = "SELECT price FROM Bids WHERE price >= ALL(SELECT price FROM Bids)";
