@@ -43,6 +43,18 @@
 <?php
 $dbconn = pg_connect("host=localhost port=9000 dbname=postgres user=postgres password=password")
     or die('Could not connect: ' . pg_last_error());
+
+$query = "SELECT price FROM Bids WHERE price >= ALL(SELECT price FROM Bids)";
+$result = pg_query($query) or die('Query failed: ' . pg_last_error());
+$row = pg_fetch_row($result);
+$highestBid = $row[0];
+
+$query = "SELECT AVG(price) FROM Bids";
+$result = pg_query($query) or die('Query failed: ' . pg_last_error());
+$row = pg_fetch_row($result);
+$averageBid = $row[0];
+
+echo "<td>" . "The highest bid is currently $" . $highestBid . ", and the average bid is $" . number_format((float)$averageBid, 2, '.', '')  . "! Join us and earn a quick buck now!" . "</td>";
 ?>
 
 <tr>

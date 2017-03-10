@@ -45,17 +45,21 @@ $dbconn = pg_connect("host=localhost port=5432 dbname=postgres user=postgres pas
 	if(isset($_GET['user'])) {
 		echo "<h1>".$_GET['user']."'s received bids<hr>";
 
-		$query = "SELECT petownerid, fromDate, toDate, price FROM Bids WHERE caretakerid='".$_GET['user']."'";
+		$query = "SELECT b.petownerid, p.name, p.breed, b.fromDate, b.toDate, b.price FROM Bids b NATURAL JOIN Pets p WHERE caretakerid='".$_GET['user']."'";
 
 		$result = pg_query($query) or die('Query failed: ' . pg_last_error());
 
 		echo "<table border=\"1\" >
-			    <col width=\"25%\">
-			    <col width=\"25%\">
+			    <col width=\"15%\">
+			    <col width=\"15%\">
 			    <col width=\"20%\">
-			    <col width=\"25%\">
+			    <col width=\"15%\">
+			    <col width=\"15%\">
+			    <col width=\"10%\">
 			    <tr>
 			    <th>Pet Owner</th>
+			    <th>Pet Name</th>
+			    <th>Pet Breed</th>
 			    <th>From</th>
 			    <th>To</th>
 			    <th>Price</th>
@@ -66,12 +70,23 @@ $dbconn = pg_connect("host=localhost port=5432 dbname=postgres user=postgres pas
 		      echo "<td>" . $row[0] . "</td>";
 		      echo "<td>" . $row[1] . "</td>";
 		      echo "<td>" . $row[2] . "</td>";
-		      echo "<td>$" . $row[3] . "</td>";
+		      echo "<td>" . $row[3] . "</td>";
+		      echo "<td>" . $row[4] . "</td>";
+		      echo "<td>$" . $row[5] . "</td>";
 		      echo "</tr>";
 		    }
 		echo "</table>";
-		    
-		pg_free_result($result);	    
+
+		$today = date("Y-m-d");
+		$query = "SELECT price FROM Bids WHERE fromDate>='$today' AND caretakerid='".$_GET['user']."' AND price >= ALL(SELECT price FROM Bids WHERE fromDate>='$today' AND caretakerid='".$_GET['user']."')";
+
+		$result = pg_query($query) or die('Query failed: ' . pg_last_error());
+		if (pg_num_rows($result) > 0) {
+			$row = pg_fetch_row($result);
+			echo "<td>" . "The highest bid that " . $_GET['user'] . " has from today onwards is $" . $row[0] . ". Bid a higher price to secure your petkeeper!" . "</td>";
+		}
+		
+		pg_free_result($result);	
 	} 
 
 ?>

@@ -1,20 +1,3 @@
-/*
-CREATE TABLE Bids (
-petownerid VARCHAR(32) NOT NULL,
-caretakerid VARCHAR(32) NOT NULL,
-petid VARCHAR(32) NOT NULL,
-fromDate DATE NOT NULL,
-toDate DATE NOT NULL,
-price NUMERIC(7,2) NOT NULL,
-PRIMARY KEY (petownerid, caretakerid, petid),
-FOREIGN KEY (petownerid) REFERENCES Users(userid),
-FOREIGN KEY (caretakerid) REFERENCES Users(userid),
-FOREIGN KEY (petid) REFERENCES Pets(petid),
-CONSTRAINT id CHECK(petownerid <> caretakerid),
-CONSTRAINT dates CHECK(fromDate < toDate)
-);
-*/
-
 SET datestyle = "ISO, DMY";
 
 INSERT INTO Bids values ('huangran94', 'xiexin94', '1', '26-02-2017', '15-10-2017', 187.59);
