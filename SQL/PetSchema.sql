@@ -32,3 +32,33 @@ FOREIGN KEY (petid) REFERENCES Pets(petid),
 CONSTRAINT id CHECK(petownerid <> caretakerid),
 CONSTRAINT dates CHECK(fromDate < toDate)
 );
+
+CREATE VIEW Bishan_caretakers AS
+SELECT userid, password, name, email, address, description
+FROM Users
+WHERE UPPER(address) LIKE UPPER('%Bishan%') AND (isA = 'caretaker' OR isA = 'both');
+
+CREATE VIEW Toa_payoh_caretakers AS
+SELECT userid, password, name, email, address, description
+FROM Users
+WHERE UPPER(address) LIKE UPPER('%Toa Payoh%') AND (isA = 'caretaker' OR isA = 'both');
+
+CREATE VIEW Kent_ridge_caretakers AS
+SELECT userid, password, name, email, address, description
+FROM Users
+WHERE UPPER(address) LIKE UPPER('%Kent Ridge%') AND (isA = 'caretaker' OR isA = 'both');
+
+CREATE VIEW Jurong_caretakers AS
+SELECT userid, password, name, email, address, description
+FROM Users
+WHERE UPPER(address) LIKE UPPER('%Jurong%') AND (isA = 'caretaker' OR isA = 'both');
+
+CREATE VIEW Woodlands_caretakers AS
+SELECT userid, password, name, email, address, description
+FROM Users
+WHERE UPPER(address) LIKE UPPER('%Woodlands%') AND (isA = 'caretaker' OR isA = 'both');
+
+CREATE VIEW Pasir_ris_caretakers AS
+SELECT userid, password, name, email, address, description
+FROM Users
+WHERE UPPER(address) LIKE UPPER('%Pasir Ris') AND (isA = 'caretaker' OR isA = 'both');
