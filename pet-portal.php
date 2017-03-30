@@ -108,22 +108,22 @@ if(isset($_GET['formSubmit']))
 {
   if ($_GET['quicklocation'] == 'Bishan') 
   {
-    $query = "SELECT * from Bishan_caretakers";
+    $query = "SELECT userid, name, email, description FROM Bishan_caretakers";
   } elseif ($_GET['quicklocation'] == 'Toa Payoh') 
   { 
-     $query = "SELECT * from Toa_payoh_caretakers";
+     $query = "SELECT userid, name, email, description FROM Toa_payoh_caretakers";
   } elseif ($_GET['quicklocation'] == 'Kent Ridge') 
   {
-    $query = "SELECT * from Kent_ridge_caretakers";
+    $query = "SELECT userid, name, email, description FROM Kent_ridge_caretakers";
   } elseif ($_GET['quicklocation'] == 'Jurong') 
   {
-    $query = "SELECT * from Jurong_caretakers";
+    $query = "SELECT userid, name, email, description FROM Jurong_caretakers";
   } elseif ($_GET['quicklocation'] == 'Woodlands') 
   {
-    $query = "SELECT * from Woodlands_caretakers";
+    $query = "SELECT userid, name, email, description FROM Woodlands_caretakers";
   } elseif ($_GET['quicklocation'] == 'Pasir Ris') 
   {
-    $query = "SELECT * from Pasir_ris_caretakers";
+    $query = "SELECT userid, name, email, description FROM Pasir_ris_caretakers";
   } else 
   {
     $query = "SELECT userid, name, email, description FROM USERS WHERE (name LIKE UPPER('%".$_GET['name']."%') AND UPPER(description) LIKE UPPER('%".$_GET['breed']."%') AND UPPER(address) LIKE UPPER('%".$_GET['quicklocation']."%')) AND (isA = 'caretaker' OR isA = 'both')";
