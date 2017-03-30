@@ -65,18 +65,12 @@ echo "<td>" . "The highest bid is currently $" . $highestBid . ", and the averag
         Location: <input type="text" name="location" id="location">
         Quick Location filter: <select name="quicklocation" onchange="this.form.submit()">
         <option value="">-Select Location-</option>
-        <?php
-        $query = 'SELECT DISTINCT address FROM users ORDER BY address';
-        $result = pg_query($query) or die('Query failed: ' . pg_last_error());
-         
-        while($line = pg_fetch_array($result, null, PGSQL_ASSOC)){
-           foreach ($line as $col_value) {
-              echo "<option value=\"".$col_value."\">".$col_value."</option><br>";
-            }
-        }
-        pg_free_result($result);
-        ?>
-        </select>
+        <option value="Bishan">Bishan</option>
+        <option value="Toa Payoh">Toa Payoh</option>
+		<option value="Kent Ridge">Kent Ridge</option>
+		<option value="Jurong">Jurong</option>
+		<option value="Woodlands">Woodlands</option>
+		<option value="Pasir Ris">Pasir Ris</option>
         <input type="submit" name="formSubmit" value="Search" >
 </form>
 <?php
@@ -118,8 +112,18 @@ if(isset($_GET['formSubmit']))
   } elseif ($_GET['quicklocation'] == 'Toa Payoh') 
   { 
      $query = "SELECT * from Toa_payoh_caretakers";
-  } elseif ($_GET['quicklocation'] == 'Balestier') {
-    $query = "SELECT * from Balestier_caretakers";
+  } elseif ($_GET['quicklocation'] == 'Kent Ridge') 
+  {
+    $query = "SELECT * from Kent_ridge_caretakers";
+  } elseif ($_GET['quicklocation'] == 'Jurong') 
+  {
+    $query = "SELECT * from Jurong_caretakers";
+  } elseif ($_GET['quicklocation'] == 'Woodlands') 
+  {
+    $query = "SELECT * from Woodlands_caretakers";
+  } elseif ($_GET['quicklocation'] == 'Pasir Ris') 
+  {
+    $query = "SELECT * from Pasir_ris_caretakers";
   } else 
   {
     $query = "SELECT userid, name, email, description FROM USERS WHERE (name LIKE UPPER('%".$_GET['name']."%') AND UPPER(description) LIKE UPPER('%".$_GET['breed']."%') AND UPPER(address) LIKE UPPER('%".$_GET['quicklocation']."%')) AND (isA = 'caretaker' OR isA = 'both')";
@@ -163,6 +167,3 @@ pg_close($dbconn);
 
 </body>
 </html>
-
-
-
