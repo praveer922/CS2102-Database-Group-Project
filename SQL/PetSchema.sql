@@ -61,4 +61,4 @@ WHERE UPPER(address) LIKE UPPER('%Woodlands%') AND (isA = 'caretaker' OR isA = '
 CREATE VIEW Pasir_ris_caretakers AS
 SELECT userid, password, name, email, address, description
 FROM Users
-WHERE UPPER(address) LIKE UPPER('%Pasir Ris') AND (isA = 'caretaker' OR isA = 'both');
+WHERE UPPER(address) LIKE UPPER('%Pasir Ris%') AND (isA = 'caretaker' OR isA = 'both');
