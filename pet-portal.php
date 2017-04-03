@@ -36,7 +36,7 @@
  </nav>
 
 <table>
-<tr> <td colspan="2" style="background-color:#FFA500;">2
+<tr> <td colspan="2" style="background-color:#FFA500;">
 <h1>Welcome to Pets Paradise - Singapore's No. 1 Pet Caring portal!</h1>
 </td> </tr>
 

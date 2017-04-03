@@ -2,7 +2,7 @@ CREATE TABLE Users (
 userid VARCHAR(32) PRIMARY KEY,
 password VARCHAR(32) NOT NULL,
 name VARCHAR(128) NOT NULL,
-email VARCHAR(128) NOT NULL,
+email VARCHAR(128) UNIQUE NOT NULL,
 address VARCHAR(128) NOT NULL,
 isA VARCHAR(20) CHECK(isA = 'caretaker' OR isA ='petowner' OR isA = 'both'),
 description TEXT
