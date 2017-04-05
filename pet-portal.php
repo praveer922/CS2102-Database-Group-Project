@@ -43,7 +43,7 @@
   <!-- SEARCH FORM -->
 
 
-  <form class="search-form">
+  <form class="search-form" action="/pet-portal.php#results">
     <div class="col-md-12 text-center">
       <input type="text" name="location" id="location" placeholder="Location">
       <select name="quicklocation" onchange="this.form.submit()" style="color:black;">
@@ -95,8 +95,9 @@ $averageBid = $row[0];
 </div>
 
 
-<div class="row">
+<div class="row"  id='results'>
   <div class="col-md-10 col-md-offset-1">
+
 <?php
 
 if(isset($_GET['formSubmit'])) {
@@ -105,27 +106,47 @@ if(isset($_GET['formSubmit'])) {
   {
     if ($_GET['quicklocation'] == 'Bishan')
     {
+      echo "<h2>Showing Results in Bishan</h2>";
       $query = "SELECT userid, name, email, description FROM Bishan_caretakers";
     } elseif ($_GET['quicklocation'] == 'Toa Payoh')
     {
+      echo "<h2>Showing Results in Toa Payoh</h2>";
        $query = "SELECT userid, name, email, description FROM Toa_payoh_caretakers";
     } elseif ($_GET['quicklocation'] == 'Kent Ridge')
     {
+      echo "<h2>Showing Results in Kent Ridge</h2>";
       $query = "SELECT userid, name, email, description FROM Kent_ridge_caretakers";
     } elseif ($_GET['quicklocation'] == 'Jurong')
     {
+      echo "<h2>Showing Results in Jurong</h2>";
       $query = "SELECT userid, name, email, description FROM Jurong_caretakers";
     } elseif ($_GET['quicklocation'] == 'Woodlands')
     {
+      echo "<h2>Showing Results in Woodlands</h2>";
       $query = "SELECT userid, name, email, description FROM Woodlands_caretakers";
     } elseif ($_GET['quicklocation'] == 'Pasir Ris')
     {
+      echo "<h2>Showing Results in Pasir Ris</h2>";
       $query = "SELECT userid, name, email, description FROM Pasir_ris_caretakers";
     } else {
+      echo "<h2>Showing Results";
+      if(isset($_GET['name']) && $_GET['name'] !== '' && isset($_GET['breed']) && $_GET['breed'] !== '') {
+        echo " for " . $_GET['name']. " and " . $_GET['breed'];
+      } elseif (isset($_GET['name']) && $_GET['name'] !== '') {
+        echo " for " . $_GET['name'];
+      } elseif (isset($_GET['breed']) && $_GET['breed'] !== '') {
+        echo " for " . $_GET['breed'];
+      }
+
+      if(isset($_GET['location']) && $_GET['location'] !== '') {
+        echo " in ". $_GET['location'];
+      }
+      echo "</h2>";
     $query = "SELECT userid, name, email, description FROM USERS WHERE (name LIKE UPPER('%".$_GET['name']."%') AND UPPER(description) LIKE UPPER('%".$_GET['breed']."%') AND UPPER(address) LIKE UPPER('%".$_GET['location']."%')) AND (isA = 'caretaker' OR isA = 'both')";
   }
-
+      /** Debug mode
       echo "<b>SQL:   </b>".$query."<br><br>";
+      **/
       $result = pg_query($query) or die('Query failed: ' . pg_last_error());
 
 
