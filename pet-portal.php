@@ -35,10 +35,11 @@
   </div>
  </nav>
 
-<table>
-<tr> <td colspan="2" style="background-color:#FFA500;">
-<h1>Welcome to Pets Paradise - Singapore's No. 1 Pet Caring portal!</h1>
-</td> </tr>
+<div class="jumbotron text-center">
+  <h1>Welcome to Pets Paradise.</h1> 
+  <p>Singapore's No. 1 Pet Caring portal!</p> 
+</div>
+
 
 <?php
 $dbconn = pg_connect("postgres://plwneqlk:-2HZ6tyCgzUN7vQTK8m0FBkUlQOZ6brW@babar.elephantsql.com:5432/plwneqlk")
@@ -54,8 +55,17 @@ $result = pg_query($query) or die('Query failed: ' . pg_last_error());
 $row = pg_fetch_row($result);
 $averageBid = $row[0];
 
-echo "<td>" . "The highest bid is currently $" . $highestBid . ", and the average bid is $" . number_format((float)$averageBid, 2, '.', '')  . "! Join us and earn a quick buck now!" . "</td>";
 ?>
+<div class="container text-center">
+  <p style="font-size:16px;">
+<?php echo "The highest bid is currently $" . $highestBid . ", and the average bid is $" . number_format((float)$averageBid, 2, '.', '').".";
+?></p> 
+<p style="font-size:16px;">Join us and earn a quick buck now!</p><hr>
+</div>
+
+<div class="col-md-10 col-md-offset-1">
+<table>
+
 
 <tr>
 <td style="background-color:#eeeeee;">
@@ -164,6 +174,7 @@ pg_close($dbconn);
 <td colspan="2" style="background-color:#FFA500; text-align:center;"> Copyright &#169; CS2102
 </td> </tr>
 </table>
+</div>
 
 </body>
 </html>
