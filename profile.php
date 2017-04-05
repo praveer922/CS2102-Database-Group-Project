@@ -37,25 +37,45 @@
 
 <?php
 $dbconn = pg_connect("postgres://plwneqlk:-2HZ6tyCgzUN7vQTK8m0FBkUlQOZ6brW@babar.elephantsql.com:5432/plwneqlk")
-    or die('Could not connect: ' . pg_last_error());    
+    or die('Could not connect: ' . pg_last_error());
 ?>
 
 <?php
 
 	if(isset($_GET['user'])) {
-		echo "<h1>".$_GET['user']."'s received bids<hr>";
+    echo"
+
+    <div class='row'>
+    <div class='col-md-5 col-md-offset-1'>
+    <h2>". $_GET['user'] . "'s Profile</h2>
+    <div class='panel panel-default'>
+  <div class='panel-heading'>User Information</div>
+  <div class='panel-body'>
+  <p><strong>Name:</strong></p>
+  <p><strong>Email:</strong></p>
+  <p><strong>Address:</strong>
+  <p><strong>Description:</strong></p></div>
+</div>";
+
+  $today = date("Y-m-d");
+  $query = "SELECT price FROM Bids WHERE fromDate>='$today' AND caretakerid='".$_GET['user']."' AND price >= ALL(SELECT price FROM Bids WHERE fromDate>='$today' AND caretakerid='".$_GET['user']."')";
+
+  $result = pg_query($query) or die('Query failed: ' . pg_last_error());
+  if (pg_num_rows($result) > 0) {
+    $row = pg_fetch_row($result);
+    echo "<h4>The highest bid that " . $_GET['user'] . " has from today onwards is <strong>$" . $row[0] . "</strong>.</h4>
+    <h4>Bid a higher price to secure your petkeeper!</h4></div>";
+  }
+
+
+		echo "<div class='col-md-5'>
+    <h2>Received bids</h2>";
 
 		$query = "SELECT b.petownerid, p.name, p.breed, b.fromDate, b.toDate, b.price FROM Bids b NATURAL JOIN Pets p WHERE caretakerid='".$_GET['user']."'";
 
 		$result = pg_query($query) or die('Query failed: ' . pg_last_error());
 
-		echo "<table border=\"1\" >
-			    <col width=\"15%\">
-			    <col width=\"15%\">
-			    <col width=\"20%\">
-			    <col width=\"15%\">
-			    <col width=\"15%\">
-			    <col width=\"10%\">
+		echo "<div class='panel panel-default'><table class='table table-striped table-hover table-bordered table-responsive'>
 			    <tr>
 			    <th>Pet Owner</th>
 			    <th>Pet Name</th>
@@ -75,19 +95,14 @@ $dbconn = pg_connect("postgres://plwneqlk:-2HZ6tyCgzUN7vQTK8m0FBkUlQOZ6brW@babar
 		      echo "<td>$" . $row[5] . "</td>";
 		      echo "</tr>";
 		    }
-		echo "</table>";
+		echo "</table></div>
+    </div>
+    </div>";
 
-		$today = date("Y-m-d");
-		$query = "SELECT price FROM Bids WHERE fromDate>='$today' AND caretakerid='".$_GET['user']."' AND price >= ALL(SELECT price FROM Bids WHERE fromDate>='$today' AND caretakerid='".$_GET['user']."')";
 
-		$result = pg_query($query) or die('Query failed: ' . pg_last_error());
-		if (pg_num_rows($result) > 0) {
-			$row = pg_fetch_row($result);
-			echo "<td>" . "The highest bid that " . $_GET['user'] . " has from today onwards is $" . $row[0] . ". Bid a higher price to secure your petkeeper!" . "</td>";
-		}
-		
-		pg_free_result($result);	
-	} 
+
+		pg_free_result($result);
+	}
 
 ?>
 
