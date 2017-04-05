@@ -63,7 +63,43 @@ body {
 
 /* SEARCH PAGE CSS
 -------------------------------------------------- */
+.jumbotron h1{
+  font-weight: 700;
+  font-size: 5em;
+  color: white;
+}
 
+.jumbotron p{
+  color: white;
+}
+
+form {
+   text-align: center;
+      color:black;
+}
+
+form input,select{
+   padding: 0.7em;
+   border-radius: 8px;
+   margin-top: 1em;
+   margin-left: 0.5em;
+   margin-right: 0.5em;
+}
+
+::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color:  black;;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+   color:   black;;
+   opacity:  1;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+   color:  black;;
+   opacity:  1;
+}
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+   color:   black;;
+}
 
 
 /* RESPONSIVE CSS

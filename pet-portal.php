@@ -35,9 +35,37 @@
   </div>
  </nav>
 
-<div class="jumbotron text-center">
-  <h1>Welcome to Pets Paradise.</h1> 
-  <p>Singapore's No. 1 Pet Caring portal!</p> 
+<!-- PAGE HEADER -->
+<div class="jumbotron text-center" style="background-image: url('https://static.pexels.com/photos/89775/dog-hovawart-black-pet-89775.jpeg'); background-position: 0px -200px;">
+  <h1>Welcome to Pets Paradise.</h1>
+  <p>Find a trusted pet sitter near you!</p>
+  <br>
+  <!-- SEARCH FORM -->
+
+
+  <form>
+    <div class="col-md-12 text-center">
+      <input type="text" name="location" id="location" placeholder="Location">
+      <select name="quicklocation" onchange="this.form.submit()" style="color:black;">
+      <option value="" >-Quick Location Filter-</option>
+      <option value="Bishan">Bishan</option>
+      <option value="Toa Payoh">Toa Payoh</option>
+  <option value="Kent Ridge">Kent Ridge</option>
+  <option value="Jurong">Jurong</option>
+  <option value="Woodlands">Woodlands</option>
+  <option value="Pasir Ris">Pasir Ris</option>
+
+
+
+      <input type="text" name="breed" id="breed" placeholder="Pet Breed">
+          <input type="text" name="name" id="name" placeholder="Caretaker's name">
+        </div>
+        <div class="row">
+          <input type="submit" name="formSubmit" value="Find a Sitter" class="btn btn-default btn-lg" id="input-submit">
+        </div>
+  </form>
+
+
 </div>
 
 
@@ -59,33 +87,15 @@ $averageBid = $row[0];
 <div class="container text-center">
   <p style="font-size:16px;">
 <?php echo "The highest bid is currently $" . $highestBid . ", and the average bid is $" . number_format((float)$averageBid, 2, '.', '').".";
-?></p> 
+?></p>
 <p style="font-size:16px;">Join us and earn a quick buck now!</p><hr>
 </div>
 
-<div class="col-md-10 col-md-offset-1">
-<table>
 
 
-<tr>
-<td style="background-color:#eeeeee;">
-<form>
-        Caretaker's name: <input type="text" name="name" id="name">
-        Pet breed: <input type="text" name="breed" id="breed">
-        Location: <input type="text" name="location" id="location">
-        Quick Location filter: <select name="quicklocation" onchange="this.form.submit()">
-        <option value="">-Select Location-</option>
-        <option value="Bishan">Bishan</option>
-        <option value="Toa Payoh">Toa Payoh</option>
-		<option value="Kent Ridge">Kent Ridge</option>
-		<option value="Jurong">Jurong</option>
-		<option value="Woodlands">Woodlands</option>
-		<option value="Pasir Ris">Pasir Ris</option>
-        <input type="submit" name="formSubmit" value="Search" >
-</form>
 <?php
 
-if(isset($_GET['formSubmit'])) 
+if(isset($_GET['formSubmit']))
 {
     $query = "SELECT userid, name, email, description FROM USERS WHERE (name LIKE UPPER('%".$_GET['name']."%') AND UPPER(description) LIKE UPPER('%".$_GET['breed']."%') AND UPPER(address) LIKE UPPER('%".$_GET['location']."%')) AND (isA = 'caretaker' OR isA = 'both')";
     echo "<b>SQL:   </b>".$query."<br><br>";
@@ -111,30 +121,30 @@ if(isset($_GET['formSubmit']))
       echo "</tr>";
     }
     echo "</table>";
-    
+
     pg_free_result($result);
 
 } elseif(isset($_GET['quicklocation']))
 {
-  if ($_GET['quicklocation'] == 'Bishan') 
+  if ($_GET['quicklocation'] == 'Bishan')
   {
     $query = "SELECT userid, name, email, description FROM Bishan_caretakers";
-  } elseif ($_GET['quicklocation'] == 'Toa Payoh') 
-  { 
+  } elseif ($_GET['quicklocation'] == 'Toa Payoh')
+  {
      $query = "SELECT userid, name, email, description FROM Toa_payoh_caretakers";
-  } elseif ($_GET['quicklocation'] == 'Kent Ridge') 
+  } elseif ($_GET['quicklocation'] == 'Kent Ridge')
   {
     $query = "SELECT userid, name, email, description FROM Kent_ridge_caretakers";
-  } elseif ($_GET['quicklocation'] == 'Jurong') 
+  } elseif ($_GET['quicklocation'] == 'Jurong')
   {
     $query = "SELECT userid, name, email, description FROM Jurong_caretakers";
-  } elseif ($_GET['quicklocation'] == 'Woodlands') 
+  } elseif ($_GET['quicklocation'] == 'Woodlands')
   {
     $query = "SELECT userid, name, email, description FROM Woodlands_caretakers";
-  } elseif ($_GET['quicklocation'] == 'Pasir Ris') 
+  } elseif ($_GET['quicklocation'] == 'Pasir Ris')
   {
     $query = "SELECT userid, name, email, description FROM Pasir_ris_caretakers";
-  } else 
+  } else
   {
     $query = "SELECT userid, name, email, description FROM USERS WHERE (name LIKE UPPER('%".$_GET['name']."%') AND UPPER(description) LIKE UPPER('%".$_GET['breed']."%') AND UPPER(address) LIKE UPPER('%".$_GET['quicklocation']."%')) AND (isA = 'caretaker' OR isA = 'both')";
   }
@@ -161,20 +171,34 @@ if(isset($_GET['formSubmit']))
       echo "</tr>";
     }
     echo "</table>";
-    
+
     pg_free_result($result);
   }
 ?>
 
-</td> </tr>
+
 <?php
 pg_close($dbconn);
 ?>
-<tr>
-<td colspan="2" style="background-color:#FFA500; text-align:center;"> Copyright &#169; CS2102
-</td> </tr>
-</table>
-</div>
+
+
+
+
+<!-- FOOTER -->
+<section id="contact">
+  <div class="container">
+      <div class="row">
+          <div class="col-lg-8 col-lg-offset-2 text-center">
+              <h2 class="section-heading">A CS2102 Project</h2>
+              <hr class="primary">
+          </div>
+          <div class="col-lg-12 text-center">
+              <i class="fa fa-envelope-o fa-3x sr-contact"></i>
+              <p><a href="mailto:yongzhiyuan@u.nus.edu">Contact our group leader.</a></p>
+          </div>
+      </div>
+  </div>
+</section>
 
 </body>
 </html>
