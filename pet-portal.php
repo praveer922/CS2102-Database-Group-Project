@@ -43,7 +43,7 @@
   <!-- SEARCH FORM -->
 
 
-  <form>
+  <form class="search-form">
     <div class="col-md-12 text-center">
       <input type="text" name="location" id="location" placeholder="Location">
       <select name="quicklocation" onchange="this.form.submit()" style="color:black;">
@@ -65,8 +65,8 @@
         </div>
   </form>
 
+<hr style="max-width:50%;">
 
-</div>
 
 
 <?php
@@ -84,97 +84,78 @@ $row = pg_fetch_row($result);
 $averageBid = $row[0];
 
 ?>
-<div class="container text-center">
-  <p style="font-size:16px;">
-<?php echo "The highest bid is currently $" . $highestBid . ", and the average bid is $" . number_format((float)$averageBid, 2, '.', '').".";
+<div class="row text-center" style="padding-top:10px;">
+  <p style="font-size:18px;">
+<?php echo "The highest bid is currently <strong>$" . $highestBid . "</strong>, and the average bid is <strong>$" . number_format((float)$averageBid, 2, '.', '')."</strong>.";
 ?></p>
-<p style="font-size:16px;">Join us and earn a quick buck now!</p><hr>
+<p style="font-size:16px;">Join us and earn a quick buck now!</p>
+<a href="/register.php" class="btn btn-default btn-lg sitter-btn">Become a Sitter</a>
+
+</div>
 </div>
 
 
-
+<div class="row">
+  <div class="col-md-10 col-md-offset-1">
 <?php
 
-if(isset($_GET['formSubmit']))
-{
+if(isset($_GET['formSubmit'])) {
+
+  if(isset($_GET['quicklocation']))
+  {
+    if ($_GET['quicklocation'] == 'Bishan')
+    {
+      $query = "SELECT userid, name, email, description FROM Bishan_caretakers";
+    } elseif ($_GET['quicklocation'] == 'Toa Payoh')
+    {
+       $query = "SELECT userid, name, email, description FROM Toa_payoh_caretakers";
+    } elseif ($_GET['quicklocation'] == 'Kent Ridge')
+    {
+      $query = "SELECT userid, name, email, description FROM Kent_ridge_caretakers";
+    } elseif ($_GET['quicklocation'] == 'Jurong')
+    {
+      $query = "SELECT userid, name, email, description FROM Jurong_caretakers";
+    } elseif ($_GET['quicklocation'] == 'Woodlands')
+    {
+      $query = "SELECT userid, name, email, description FROM Woodlands_caretakers";
+    } elseif ($_GET['quicklocation'] == 'Pasir Ris')
+    {
+      $query = "SELECT userid, name, email, description FROM Pasir_ris_caretakers";
+    } else {
     $query = "SELECT userid, name, email, description FROM USERS WHERE (name LIKE UPPER('%".$_GET['name']."%') AND UPPER(description) LIKE UPPER('%".$_GET['breed']."%') AND UPPER(address) LIKE UPPER('%".$_GET['location']."%')) AND (isA = 'caretaker' OR isA = 'both')";
-    echo "<b>SQL:   </b>".$query."<br><br>";
-    $result = pg_query($query) or die('Query failed: ' . pg_last_error());
-    echo "<table border=\"1\" >
-    <col width=\"15%\">
-    <col width=\"15%\">
-    <col width=\"15%\">
-    <col width=\"55%\">
-    <tr>
-    <th>Username</th>
-    <th>Name</th>
-    <th>Email</th>
-    <th>Description</th>
-    </tr>";
-
-    while ($row = pg_fetch_row($result)){
-      echo "<tr>";
-      echo "<td><a href=profile.php?user=" . $row[0] . ">".$row[0]."</a></td>";
-      echo "<td>" . $row[1] . "</td>";
-      echo "<td>" . $row[2] . "</td>";
-        echo "<td>" . $row[3] . "</td>";
-      echo "</tr>";
-    }
-    echo "</table>";
-
-    pg_free_result($result);
-
-} elseif(isset($_GET['quicklocation']))
-{
-  if ($_GET['quicklocation'] == 'Bishan')
-  {
-    $query = "SELECT userid, name, email, description FROM Bishan_caretakers";
-  } elseif ($_GET['quicklocation'] == 'Toa Payoh')
-  {
-     $query = "SELECT userid, name, email, description FROM Toa_payoh_caretakers";
-  } elseif ($_GET['quicklocation'] == 'Kent Ridge')
-  {
-    $query = "SELECT userid, name, email, description FROM Kent_ridge_caretakers";
-  } elseif ($_GET['quicklocation'] == 'Jurong')
-  {
-    $query = "SELECT userid, name, email, description FROM Jurong_caretakers";
-  } elseif ($_GET['quicklocation'] == 'Woodlands')
-  {
-    $query = "SELECT userid, name, email, description FROM Woodlands_caretakers";
-  } elseif ($_GET['quicklocation'] == 'Pasir Ris')
-  {
-    $query = "SELECT userid, name, email, description FROM Pasir_ris_caretakers";
-  } else
-  {
-    $query = "SELECT userid, name, email, description FROM USERS WHERE (name LIKE UPPER('%".$_GET['name']."%') AND UPPER(description) LIKE UPPER('%".$_GET['breed']."%') AND UPPER(address) LIKE UPPER('%".$_GET['quicklocation']."%')) AND (isA = 'caretaker' OR isA = 'both')";
   }
-    echo "<b>SQL:   </b>".$query."<br><br>";
-    $result = pg_query($query) or die('Query failed: ' . pg_last_error());
-    echo "<table border=\"1\" >
-    <col width=\"15%\">
-    <col width=\"15%\">
-    <col width=\"15%\">
-    <col width=\"55%\">
-    <tr>
-    <th>Username</th>
-    <th>Name</th>
-    <th>Email</th>
-    <th>Description</th>
-    </tr>";
 
-    while ($row = pg_fetch_row($result)){
-      echo "<tr>";
-      echo "<td><a href=profile.php?user=" . $row[0] . ">".$row[0]."</a></td>";
-      echo "<td>" . $row[1] . "</td>";
-      echo "<td>" . $row[2] . "</td>";
-        echo "<td>" . $row[3] . "</td>";
-      echo "</tr>";
-    }
-    echo "</table>";
+      echo "<b>SQL:   </b>".$query."<br><br>";
+      $result = pg_query($query) or die('Query failed: ' . pg_last_error());
 
-    pg_free_result($result);
-  }
+
+      echo "<div class='panel panel-default'><table class='table table-striped table-hover table-bordered table-responsive'>
+      <thead class='thead-inverse'>
+      <tr>
+      <th>Username</th>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Description</th>
+      </tr>
+      </thead><tbody>";
+
+      while ($row = pg_fetch_row($result)){
+        echo "<tr>";
+        echo "<td><a href=profile.php?user=" . $row[0] . ">".$row[0]."</a></td>";
+        echo "<td>" . $row[1] . "</td>";
+        echo "<td>" . $row[2] . "</td>";
+          echo "<td>" . $row[3] . "</td>";
+        echo "</tr>";
+      }
+      echo "</tbody></table></div>";
+
+      pg_free_result($result);
+}
+}
+
 ?>
+</div>
+</div>
 
 
 <?php
