@@ -43,8 +43,6 @@ if(!isset($_GET['user'])) {
     $resultOne = pg_query($queryOne) or die('Query failed: ' . pg_last_error());
     $rowOne = pg_fetch_row($resultOne);
 
-    $queryTwo = "SELECT p.name, p.age, p.breed, p.gender, p.description FROM Pets p WHERE p.owner='$userid'";
-    $resultTwo = pg_query($queryTwo) or die('Query failed: ' . pg_last_error());
     echo "
 
     <div class='row'>
@@ -56,11 +54,17 @@ if(!isset($_GET['user'])) {
   <p><strong>Name:</strong> ". $rowOne[0] ."</p>
   <p><strong>Email:</strong> ". $rowOne[1] ."</p>
   <p><strong>Address:</strong> ". $rowOne[2] ."</p>
-  <p><strong>Description:</strong> ". $rowOne[3] ."</p>
-  <p><strong>Pets:</strong></p>";
+  <p><strong>Description:</strong> ". $rowOne[3] ."</p>";
+  
+  if($_GET['user'] == $_SESSION['login_user']) 
+  {
+  echo "<p><strong>Your Pets:</strong></p>";
+  $queryTwo = "SELECT p.petid, p.name, p.age, p.breed, p.gender, p.description FROM Pets p WHERE p.owner='$userid'";
+  $resultTwo = pg_query($queryTwo) or die('Query failed: ' . pg_last_error());
 
   echo "<div class='panel panel-default'><table class='table table-striped table-hover table-bordered table-responsive'>
           <tr>
+          <th>Pet ID</th>
           <th>Pet Name</th>
           <th>Pet Age</th>
           <th>Pet Breed</th>
@@ -74,10 +78,16 @@ if(!isset($_GET['user'])) {
     echo "<td>" . $rowTwo[2] . "</td>";
     echo "<td>" . $rowTwo[3] . "</td>";
     echo "<td>" . $rowTwo[4] . "</td>";
+    echo "<td>" . $rowTwo[5] . "</td>";
     echo "</tr>";
+    echo "</table></div>";
   }
 
-  echo "</table></div></div></div>";
+  echo "
+  <p><a href=createPet.php>Create a new pet</a></p>";
+}
+
+  echo "</div></div>";
 
   $today = date("Y-m-d");
   $query = "SELECT price FROM Bids WHERE fromDate>='$today' AND caretakerid='$userid' AND price >= ALL(SELECT price FROM Bids WHERE fromDate>='$today' AND caretakerid='$userid')";
@@ -123,22 +133,58 @@ if(!isset($_GET['user'])) {
 
 		pg_free_result($result);
 
+    if($_GET['user'] != $_SESSION['login_user'])
+    {
+
     echo"
     <div class='row'>
     <div class='col-md-5 col-md-offset-1'>
-    <h2>Place your bid: </h2>
+    <h2>Place your bid for ". $userid . " to take care of your pet!</h2>
     <div class='panel panel-default'>
-    <div class='panel-body'>
+    <div class='panel-body'>";
+    
+    echo"
     <form>
+      Your pet's unique PetID: <select name=\"PetID\"> <option value=\"\">--Your pet's ID--</option>";
+
+      $query = "SELECT petid FROM Pets WHERE owner='".$_SESSION['login_user']."'";
+      $result = pg_query($query) or die('Query failed: ' . pg_last_error());
+      while($line = pg_fetch_array($result, null, PGSQL_ASSOC)){
+           foreach ($line as $col_value) {
+              echo "<option value=\"".$col_value."\">".$col_value."</option><br>";
+          }
+      }
+
+    echo"
       Start date: <input type=\"date\" name=\"startDate\" id=\"startDate\" required>
       End date: <input type=\"date\" name=\"endDate\" id=\"endDate\" required>
-      Bid price: <input type=\"number\" step=0.01 min=0 required>
-      <input type=\"submit\" name=\"formSubmit\" value=\"Place bid\">
+      Bid price: <input type=\"number\" name=\"price\" id=\"price\" step=0.01 min=0 required>
+      <input type=\"submit\" name=\"submit\" value=\"Place bid\">
     </form>
     </div>
     </div>
     </div>
     </div>";
+
+    if(isset($_POST['submit']))
+    {
+      $query = "INSERT INTO Bids VALUES ('".$_SESSION['login_user']."', '".$_GET['user']."', '".$_GET['PetID']."', '".$_GET['startDate']."', '"
+    .$_GET['endDate']."', '".$_GET['price']."');";
+
+    $result = pg_query($query);
+        if (!$result) {
+            $errormessage = pg_last_error();
+            echo "<script> alert('You have successfully bidded');
+            window.location.href='pet-portal.php'; </script>";
+            pg_close();
+            exit();
+        }
+
+        echo "<script> alert('You have successfully bidded');
+        window.location.href='pet-portal.php'; </script>";
+        pg_close();
+    }
+  }
 
 ?>
 
