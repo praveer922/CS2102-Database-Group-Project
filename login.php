@@ -15,7 +15,11 @@ session_start();
 
   <!--NAVBAR -->
   <?php
-  include_once("navbarloggedout.php");
+  if(isset($_SESSION['login_user'])) {
+    include_once("navbarloggedin.php");
+  } else {
+    include_once("navbarloggedout.php");
+  }
   ?>
 
 <?php

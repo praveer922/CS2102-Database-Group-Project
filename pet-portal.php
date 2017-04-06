@@ -13,10 +13,14 @@ session_start();
 </head>
 <body>
 
-<!--NAVBAR -->
-<?php
-include_once("navbarloggedout.php");
-?>
+  <!--NAVBAR -->
+  <?php
+  if(isset($_SESSION['login_user'])) {
+    include_once("navbarloggedin.php");
+  } else {
+    include_once("navbarloggedout.php");
+  }
+  ?>
 
 <!-- PAGE HEADER -->
 <div class="jumbotron text-center" style="background-image: url('https://static.pexels.com/photos/89775/dog-hovawart-black-pet-89775.jpeg'); background-position: 0px -200px;">

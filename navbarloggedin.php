@@ -17,9 +17,13 @@
         <li><a href="home.php#contact">Contact</a></li>
       </ul>
 
+      <ul class="nav navbar-nav">
+        <li><a href="profile.php">Your Profile</a></li>
+      </ul>
+
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="register.php">Signup  <i class="fa fa-user-plus"></i></a></li>
-         <li><a href="login.php">Login  <i class="fa fa-user"></i></a></li>
+        <li><a>You are logged in as <?php echo $_SESSION['login_user']; ?>.</a></li>
+         <li><a href="logout.php">Logout  <i class="fa fa-user"></i></a></li>
       </ul>
     </div>
   </div>

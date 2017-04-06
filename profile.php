@@ -15,7 +15,11 @@ session_start();
 
   <!--NAVBAR -->
   <?php
-  include_once("navbarloggedout.php");
+  if(isset($_SESSION['login_user'])) {
+    include_once("navbarloggedin.php");
+  } else {
+    include_once("navbarloggedout.php");
+  }
   ?>
 
 <?php
@@ -66,7 +70,7 @@ $dbconn = pg_connect("postgres://plwneqlk:-2HZ6tyCgzUN7vQTK8m0FBkUlQOZ6brW@babar
   }
 
   echo "</table></div></div></div>";
-  
+
   $today = date("Y-m-d");
   $query = "SELECT price FROM Bids WHERE fromDate>='$today' AND caretakerid='$userid' AND price >= ALL(SELECT price FROM Bids WHERE fromDate>='$today' AND caretakerid='$userid')";
 
