@@ -41,12 +41,13 @@ $dbconn = pg_connect("postgres://plwneqlk:-2HZ6tyCgzUN7vQTK8m0FBkUlQOZ6brW@babar
 ?>
  
  <body> 
+ <div class="container">
 <?php
 
 if(isset($_POST['submit'])) 
 {
 	$query = "INSERT INTO Users VALUES ('".$_POST['username']."', '".$_POST['password']."', '".strtoupper($_POST['fullname'])."', '".$_POST['emailaddress']."', '"
-		.$_POST['address']."', '".$_POST['isA']."', '".$_POST['description']."');";
+		.$_POST['address']."', '".$_POST['isA']."', '".$_POST['description']."', '".$_POST['likebreeds']."');";
 
 
 	$result = pg_query($query); 
@@ -75,12 +76,15 @@ if(isset($_POST['submit']))
             <input type="radio" name="isA" value="petowner"> Pet Owner<br>
   			<input type="radio" name="isA" value="caretaker"> Care-Taker<br>
   			<input type="radio" name="isA" value="both"> Both <br><br>
+        <p>What is your favourite breed?</p>
+        <textarea name="likebreeds" rows="15" cols="80" placeholder="Enter text here..."></textarea><br><br>
   			<p>Include a description: </p>
   			<textarea name="description" rows="15" cols="80" placeholder="Enter text here..."></textarea><br><br>
 
             <input type="submit" name="submit" value="Register"> 
             
         </form> 
+    </div>
     </body> 
 </html> 
 

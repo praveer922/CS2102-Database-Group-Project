@@ -5,7 +5,8 @@ name VARCHAR(128) NOT NULL,
 email VARCHAR(128) UNIQUE NOT NULL,
 address VARCHAR(128) NOT NULL,
 isA VARCHAR(20) CHECK(isA = 'caretaker' OR isA ='petowner' OR isA = 'both'),
-description TEXT
+description TEXT,
+likebreeds TEXT
 );
 
 CREATE TABLE Pets (
