@@ -43,35 +43,41 @@ $dbconn = pg_connect("postgres://plwneqlk:-2HZ6tyCgzUN7vQTK8m0FBkUlQOZ6brW@babar
 <?php
 
 	if(isset($_GET['user'])) {
+    $userid = $_GET['user'];
+    $query = "SELECT name, email, address, description FROM Users WHERE userid='$userid'";
+    $result = pg_query($query) or die('Query failed: ' . pg_last_error());
+    $row = pg_fetch_row($result);
+
     echo"
 
     <div class='row'>
     <div class='col-md-5 col-md-offset-1'>
-    <h2>". $_GET['user'] . "'s Profile</h2>
+    <h2>". $userid . "'s Profile</h2>
     <div class='panel panel-default'>
   <div class='panel-heading'>User Information</div>
   <div class='panel-body'>
-  <p><strong>Name:</strong></p>
-  <p><strong>Email:</strong></p>
-  <p><strong>Address:</strong>
-  <p><strong>Description:</strong></p></div>
+  <p><strong>Name:</strong> ". $row[0] ."</p>
+  <p><strong>Email:</strong> ". $row[1] ."</p>
+  <p><strong>Address:</strong> ". $row[2] ."</p>
+  <p><strong>Description:</strong> ". $row[3] ."</p></div>
 </div>";
-
+  
   $today = date("Y-m-d");
-  $query = "SELECT price FROM Bids WHERE fromDate>='$today' AND caretakerid='".$_GET['user']."' AND price >= ALL(SELECT price FROM Bids WHERE fromDate>='$today' AND caretakerid='".$_GET['user']."')";
+  $query = "SELECT price FROM Bids WHERE fromDate>='$today' AND caretakerid='$userid' AND price >= ALL(SELECT price FROM Bids WHERE fromDate>='$today' AND caretakerid='$userid')";
 
   $result = pg_query($query) or die('Query failed: ' . pg_last_error());
   if (pg_num_rows($result) > 0) {
     $row = pg_fetch_row($result);
     echo "<h4>The highest bid that " . $_GET['user'] . " has from today onwards is <strong>$" . $row[0] . "</strong>.</h4>
     <h4>Bid a higher price to secure your petkeeper!</h4></div>";
+  } else {
+    echo "no bids";
   }
-
 
 		echo "<div class='col-md-5'>
     <h2>Received bids</h2>";
 
-		$query = "SELECT b.petownerid, p.name, p.breed, b.fromDate, b.toDate, b.price FROM Bids b NATURAL JOIN Pets p WHERE caretakerid='".$_GET['user']."'";
+		$query = "SELECT b.petownerid, p.name, p.breed, b.fromDate, b.toDate, b.price FROM Bids b INNER JOIN Pets p ON p.owner = b.petownerid WHERE b.caretakerid='$userid'";
 
 		$result = pg_query($query) or die('Query failed: ' . pg_last_error());
 
@@ -84,7 +90,6 @@ $dbconn = pg_connect("postgres://plwneqlk:-2HZ6tyCgzUN7vQTK8m0FBkUlQOZ6brW@babar
 			    <th>To</th>
 			    <th>Price</th>
 			    </tr>";
-
 		while ($row = pg_fetch_row($result)){
 		      echo "<tr>";
 		      echo "<td>" . $row[0] . "</td>";
@@ -94,7 +99,7 @@ $dbconn = pg_connect("postgres://plwneqlk:-2HZ6tyCgzUN7vQTK8m0FBkUlQOZ6brW@babar
 		      echo "<td>" . $row[4] . "</td>";
 		      echo "<td>$" . $row[5] . "</td>";
 		      echo "</tr>";
-		    }
+		}
 		echo "</table></div>
     </div>
     </div>";
