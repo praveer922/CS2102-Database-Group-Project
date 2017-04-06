@@ -29,7 +29,25 @@ $dbconn = pg_connect("postgres://plwneqlk:-2HZ6tyCgzUN7vQTK8m0FBkUlQOZ6brW@babar
 
 <?php
 
-if(!isset($_GET['user'])) {
+if(isset($_GET['submit']))
+{
+
+  $query = "INSERT INTO Bids VALUES ('".$_SESSION['login_user']."', '".$_GET['user']."', '".$_GET['PetID']."', '".$_GET['startDate']."', '"
+  .$_GET['endDate']."', '".$_GET['price']."');";
+
+  $result = pg_query($query);
+    if (!$result) {
+      $errormessage = pg_last_error();
+      echo "<script> alert('You have failed to bid');
+      window.location.href='pet-portal.php'; </script>";
+      pg_close();
+      exit();
+    }
+    echo "<script> alert('You have successfully bidded');
+    window.location.href='pet-portal.php'; </script>";
+    pg_close();
+
+} elseif(!isset($_GET['user'])) {
   if(isset($_SESSION['login_user'])) {
     $_GET['user'] = $_SESSION['login_user'];
   } else {
@@ -144,7 +162,7 @@ if(!isset($_GET['user'])) {
     <div class='panel-body'>";
     
     echo"
-    <form>
+    <form action=\"profile.php\" method=\"get\">
       Your pet's unique PetID: <select name=\"PetID\"> <option value=\"\">--Your pet's ID--</option>";
 
       $query = "SELECT petid FROM Pets WHERE owner='".$_SESSION['login_user']."'";
@@ -160,30 +178,12 @@ if(!isset($_GET['user'])) {
       End date: <input type=\"date\" name=\"endDate\" id=\"endDate\" required>
       Bid price: <input type=\"number\" name=\"price\" id=\"price\" step=0.01 min=0 required>
       <input type=\"submit\" name=\"submit\" value=\"Place bid\">
+      <input type=\"text\" name=\"user\" value=".$_GET['user']." hidden>
     </form>
     </div>
     </div>
     </div>
     </div>";
-
-    if(isset($_POST['submit']))
-    {
-      $query = "INSERT INTO Bids VALUES ('".$_SESSION['login_user']."', '".$_GET['user']."', '".$_GET['PetID']."', '".$_GET['startDate']."', '"
-    .$_GET['endDate']."', '".$_GET['price']."');";
-
-    $result = pg_query($query);
-        if (!$result) {
-            $errormessage = pg_last_error();
-            echo "<script> alert('You have successfully bidded');
-            window.location.href='pet-portal.php'; </script>";
-            pg_close();
-            exit();
-        }
-
-        echo "<script> alert('You have successfully bidded');
-        window.location.href='pet-portal.php'; </script>";
-        pg_close();
-    }
   }
 
 ?>
