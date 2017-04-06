@@ -1,3 +1,7 @@
+<?php
+session_start();
+?>
+
 <html>
 <head>
   <title>Pets Paradise</title>
@@ -9,31 +13,10 @@
 </head>
 <body>
 
-<nav class="navbar navbar-default navbar-fixed-top">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="home.html">Pets Paradise <i class="fa fa-paw fa-fw"></i></a>
-    </div>
-    <div id="navbar" class="collapse navbar-collapse">
-      <ul class="nav navbar-nav">
-        <li><a href="home.html#contact">Contact</a></li>
-      </ul>
-      <ul class="nav navbar-nav">
-        <li><a href="pet-portal.php">Search</a></li>
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        <li><a href="register.php">Signup  <i class="fa fa-user-plus"></i></a></li>
-         <li><a href="login.php">Login  <i class="fa fa-user"></i></a></li>
-      </ul>
-    </div>
-  </div>
- </nav>
+<!--NAVBAR -->
+<?php
+include_once("navbarloggedout.php");
+?>
 
 <!-- PAGE HEADER -->
 <div class="jumbotron text-center" style="background-image: url('https://static.pexels.com/photos/89775/dog-hovawart-black-pet-89775.jpeg'); background-position: 0px -200px;">
@@ -100,7 +83,7 @@ $averageBid = $row[0];
 
 <?php
 if(isset($_GET['formSubmit']) ||  isset($_GET['quicklocation'])) {
-  
+
     if ($_GET['quicklocation'] == 'Bishan')
     {
       echo "<h2>Showing Results in Bishan</h2>";
