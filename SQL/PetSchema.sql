@@ -16,6 +16,7 @@ age INTEGER NOT NULL,
 breed VARCHAR(128),
 gender VARCHAR(10) CHECK(gender = 'Male' OR gender='Female'),
 description TEXT
+likebreeds TEXT
 );
 
 CREATE TABLE Bids (
