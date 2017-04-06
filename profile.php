@@ -29,8 +29,8 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li><a href="register.php">Signup  <i class="fa fa-user-plus"></i></a></li>
-<!--         <li><a href="#about">Login  <i class="fa fa-user"></i></a></li>
- -->      </ul>
+        <li><a href="login.php">Login  <i class="fa fa-user"></i></a></li>
+      </ul>
     </div>
   </div>
  </nav>
