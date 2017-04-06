@@ -29,7 +29,15 @@ $dbconn = pg_connect("postgres://plwneqlk:-2HZ6tyCgzUN7vQTK8m0FBkUlQOZ6brW@babar
 
 <?php
 
-	if(isset($_GET['user'])) {
+if(!isset($_GET['user'])) {
+  if(isset($_SESSION['login_user'])) {
+    $_GET['user'] = $_SESSION['login_user'];
+  } else {
+    echo "<div class='container'><h3>Please <a href='/login.php'>log in</a> first.</h3></div>";
+    die();
+  }
+}
+
     $userid = $_GET['user'];
     $queryOne = "SELECT u.name, u.email, u.address, u.description FROM Users u WHERE userid='$userid'";
     $resultOne = pg_query($queryOne) or die('Query failed: ' . pg_last_error());
@@ -114,7 +122,6 @@ $dbconn = pg_connect("postgres://plwneqlk:-2HZ6tyCgzUN7vQTK8m0FBkUlQOZ6brW@babar
 
 
 		pg_free_result($result);
-	}
 
 ?>
 
