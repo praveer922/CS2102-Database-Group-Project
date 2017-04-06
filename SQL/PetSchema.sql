@@ -11,7 +11,7 @@ likebreeds TEXT
 
 CREATE TABLE Pets (
 petid SERIAL PRIMARY KEY,      
-owner VARCHAR(32) REFERENCES Users(userid),
+owner VARCHAR(32) REFERENCES Users(userid) ON UPDATE CASCADE ON DELETE CASCADE,
 name VARCHAR(128) NOT NULL,
 age INTEGER NOT NULL,
 breed VARCHAR(128),
@@ -27,9 +27,9 @@ fromDate DATE NOT NULL,
 toDate DATE NOT NULL,
 price NUMERIC(7,2) NOT NULL,
 PRIMARY KEY (petownerid, caretakerid, petid),
-FOREIGN KEY (petownerid) REFERENCES Users(userid),
-FOREIGN KEY (caretakerid) REFERENCES Users(userid),
-FOREIGN KEY (petid) REFERENCES Pets(petid),
+FOREIGN KEY (petownerid) REFERENCES Users(userid) ON UPDATE CASCADE ON DELETE CASCADE,
+FOREIGN KEY (caretakerid) REFERENCES Users(userid) ON UPDATE CASCADE ON DELETE CASCADE,
+FOREIGN KEY (petid) REFERENCES Pets(petid) ON UPDATE CASCADE ON DELETE CASCADE,
 CONSTRAINT id CHECK(petownerid <> caretakerid),
 CONSTRAINT dates CHECK(fromDate < toDate)
 );
