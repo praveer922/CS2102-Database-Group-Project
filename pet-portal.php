@@ -138,7 +138,7 @@ if(isset($_GET['formSubmit']) ||  isset($_GET['quicklocation'])) {
         echo " in ". $_GET['location'];
       }
       echo "</h2>";
-    $query = "SELECT userid, name, email, description FROM USERS WHERE ((name LIKE UPPER('%".$_GET['name']."%')OR UPPER (userid) LIKE UPPER('%".$_GET['name']."%')) AND UPPER(description) LIKE UPPER('%".$_GET['breed']."%') AND UPPER(address) LIKE UPPER('%".$_GET['location']."%')) AND (isA = 'caretaker' OR isA = 'both')";
+    $query = "SELECT userid, name, email, description FROM USERS WHERE ((name LIKE UPPER('%".$_GET['name']."%')OR UPPER (userid) LIKE UPPER('%".$_GET['name']."%')) AND UPPER(likebreeds) LIKE UPPER('%".$_GET['breed']."%') AND UPPER(address) LIKE UPPER('%".$_GET['location']."%')) AND (isA = 'caretaker' OR isA = 'both')";
   }
       /** Debug mode
       echo "<b>SQL:   </b>".$query."<br><br>";
