@@ -1,3 +1,7 @@
+<?php
+session_start();
+?>
+
 <html>
 <head>
   <title>Register new pets</title>
@@ -9,30 +13,16 @@
 </head>
 <body>
 
-<nav class="navbar navbar-default navbar-fixed-top">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="home.html">Pets Paradise <i class="fa fa-paw fa-fw"></i></a>
-    </div>
-    <div id="navbar" class="collapse navbar-collapse">
-      <ul class="nav navbar-nav">
-        <li><a href="home.html#contact">Contact</a></li>
-      </ul>
-      <ul class="nav navbar-nav">
-        <li><a href="pet-portal.php">Search</a></li>
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        <li><a href="login.php">Login  <i class="fa fa-user"></i></a></li>
-      </ul>
-    </div>
-  </div>
- </nav>
+
+  <!--NAVBAR -->
+  <?php
+  if(isset($_SESSION['login_user'])) {
+    include_once("navbarloggedin.php");
+  } else {
+    include_once("navbarloggedout.php");
+  }
+  ?>
+
 
 <?php
 $dbconn = pg_connect("postgres://plwneqlk:-2HZ6tyCgzUN7vQTK8m0FBkUlQOZ6brW@babar.elephantsql.com:5432/plwneqlk")
@@ -50,7 +40,6 @@ if(isset($_POST['submit']))
 	$row = pg_fetch_row($result);
 	$petID = ($row[0]+1);
 		
-	session_start(); 
 	$owner = $_SESSION['login_user'];
 
 	$query = "INSERT INTO Pets VALUES ('".$petID."','".$owner."','".($_POST['name'])."', '".$_POST['age']."', '".$_POST['breed']."', '"
@@ -63,7 +52,7 @@ if(isset($_POST['submit']))
             exit(); 
         } 
         echo "<script> alert('You have successfully registered, ".$_POST['name'].".'); 
-        window.location.href='pet-portal.php'; </script>";
+        window.location.href='profile.php'; </script>";
         pg_close(); 
 
 
