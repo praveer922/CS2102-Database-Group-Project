@@ -44,11 +44,13 @@ $dbconn = pg_connect("postgres://plwneqlk:-2HZ6tyCgzUN7vQTK8m0FBkUlQOZ6brW@babar
 
 	if(isset($_GET['user'])) {
     $userid = $_GET['user'];
-    $query = "SELECT name, email, address, description FROM Users WHERE userid='$userid'";
-    $result = pg_query($query) or die('Query failed: ' . pg_last_error());
-    $row = pg_fetch_row($result);
+    $queryOne = "SELECT u.name, u.email, u.address, u.description FROM Users u WHERE userid='$userid'";
+    $resultOne = pg_query($queryOne) or die('Query failed: ' . pg_last_error());
+    $rowOne = pg_fetch_row($resultOne);
 
-    echo"
+    $queryTwo = "SELECT p.name, p.age, p.breed, p.gender, p.description FROM Pets p WHERE p.owner='$userid'";
+    $resultTwo = pg_query($queryTwo) or die('Query failed: ' . pg_last_error());
+    echo "
 
     <div class='row'>
     <div class='col-md-5 col-md-offset-1'>
@@ -56,11 +58,31 @@ $dbconn = pg_connect("postgres://plwneqlk:-2HZ6tyCgzUN7vQTK8m0FBkUlQOZ6brW@babar
     <div class='panel panel-default'>
   <div class='panel-heading'>User Information</div>
   <div class='panel-body'>
-  <p><strong>Name:</strong> ". $row[0] ."</p>
-  <p><strong>Email:</strong> ". $row[1] ."</p>
-  <p><strong>Address:</strong> ". $row[2] ."</p>
-  <p><strong>Description:</strong> ". $row[3] ."</p></div>
-</div>";
+  <p><strong>Name:</strong> ". $rowOne[0] ."</p>
+  <p><strong>Email:</strong> ". $rowOne[1] ."</p>
+  <p><strong>Address:</strong> ". $rowOne[2] ."</p>
+  <p><strong>Description:</strong> ". $rowOne[3] ."</p>
+  <p><strong>Pets:</strong></p>";
+
+  echo "<div class='panel panel-default'><table class='table table-striped table-hover table-bordered table-responsive'>
+          <tr>
+          <th>Pet Name</th>
+          <th>Pet Age</th>
+          <th>Pet Breed</th>
+          <th>Pet Gender</th>
+          <th>Pet Description</th>
+          </tr>";
+  while ($rowTwo = pg_fetch_row($resultTwo)){
+    echo "<tr>";
+    echo "<td>" . $rowTwo[0] . "</td>";
+    echo "<td>" . $rowTwo[1] . "</td>";
+    echo "<td>" . $rowTwo[2] . "</td>";
+    echo "<td>" . $rowTwo[3] . "</td>";
+    echo "<td>" . $rowTwo[4] . "</td>";
+    echo "</tr>";
+  }
+
+  echo "</table></div></div></div>";
   
   $today = date("Y-m-d");
   $query = "SELECT price FROM Bids WHERE fromDate>='$today' AND caretakerid='$userid' AND price >= ALL(SELECT price FROM Bids WHERE fromDate>='$today' AND caretakerid='$userid')";
@@ -70,8 +92,6 @@ $dbconn = pg_connect("postgres://plwneqlk:-2HZ6tyCgzUN7vQTK8m0FBkUlQOZ6brW@babar
     $row = pg_fetch_row($result);
     echo "<h4>The highest bid that " . $_GET['user'] . " has from today onwards is <strong>$" . $row[0] . "</strong>.</h4>
     <h4>Bid a higher price to secure your petkeeper!</h4></div>";
-  } else {
-    echo "no bids";
   }
 
 		echo "<div class='col-md-5'>
