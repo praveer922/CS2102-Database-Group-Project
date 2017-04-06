@@ -49,8 +49,11 @@ if(isset($_POST['submit']))
 	$result = pg_query($query) or die('Query failed: ' . pg_last_error());
 	$row = pg_fetch_row($result);
 	$petID = ($row[0]+1);
+		
+	session_start(); 
+	$owner = $_SESSION['login_user'];
 
-	$query = "INSERT INTO Pets VALUES ('".$petID."','".$_POST['owner']."','".($_POST['name'])."', '".$_POST['age']."', '".$_POST['breed']."', '"
+	$query = "INSERT INTO Pets VALUES ('".$petID."','".$owner."','".($_POST['name'])."', '".$_POST['age']."', '".$_POST['breed']."', '"
 		.$_POST['gender']."','".$_POST['description']."');";
 
 	$result = pg_query($query); 
@@ -71,7 +74,6 @@ if(isset($_POST['submit']))
     	<h1>Register new pet</h1>
         <form action="createPet.php" method="post"> 
 		
-            <p>Owner: </p>  <input type="text" name="owner" size="40" length="40"><BR> 
             <p>Name: </p>  <input type="text" name="name" size="40" length="40"><BR> 
             <p>Age: </p>  <input type="number" name="age" size="40" length="40"><BR> 
             <p>Breed: </p> <input type="text" name="breed" size="40" length="60"><BR> 
@@ -88,4 +90,3 @@ if(isset($_POST['submit']))
     </div>
     </body> 
 </html> 
-
