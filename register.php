@@ -41,6 +41,7 @@ $dbconn = pg_connect("postgres://plwneqlk:-2HZ6tyCgzUN7vQTK8m0FBkUlQOZ6brW@babar
 ?>
  
  <body> 
+ <div class="container">
 <?php
 
 if(isset($_POST['submit'])) 
@@ -83,6 +84,7 @@ if(isset($_POST['submit']))
             <input type="submit" name="submit" value="Register"> 
             
         </form> 
+    </div>
     </body> 
 </html> 
 
