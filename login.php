@@ -1,6 +1,6 @@
 <html>
 <head>
-  <title>Register</title>
+  <title>Login</title>
   <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
   <link href="http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
@@ -41,6 +41,7 @@ $dbconn = pg_connect("postgres://plwneqlk:-2HZ6tyCgzUN7vQTK8m0FBkUlQOZ6brW@babar
 ?>
  
  <body> 
+ <div class="container">
 <?php
 session_start();
 if(isset($_POST['submit'])) 
@@ -69,10 +70,11 @@ if(isset($_POST['submit']))
         <form action="login.php" method="post"> 
             <p>Username: </p>  <input type="text" name="username" size="40" length="40"><BR> 
             <p>Password: </p>  <input type="text" name="password" size="40" length="40"><BR> 
-
+            <br>
             <input type="submit" name="submit" value="Login"> 
             
-        </form> 
+        </form>
+    </div> 
     </body> 
 </html> 
 
