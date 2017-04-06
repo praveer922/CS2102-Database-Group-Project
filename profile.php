@@ -123,6 +123,23 @@ if(!isset($_GET['user'])) {
 
 		pg_free_result($result);
 
+    echo"
+    <div class='row'>
+    <div class='col-md-5 col-md-offset-1'>
+    <h2>Place your bid: </h2>
+    <div class='panel panel-default'>
+    <div class='panel-body'>
+    <form>
+      Start date: <input type=\"date\" name=\"startDate\" id=\"startDate\" required>
+      End date: <input type=\"date\" name=\"endDate\" id=\"endDate\" required>
+      Bid price: <input type=\"number\" step=0.01 min=0 required>
+      <input type=\"submit\" name=\"formSubmit\" value=\"Place bid\">
+    </form>
+    </div>
+    </div>
+    </div>
+    </div>";
+
 ?>
 
 </body>
