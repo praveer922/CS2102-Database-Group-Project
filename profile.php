@@ -80,8 +80,8 @@ if(!isset($_GET['user'])) {
     echo "<td>" . $rowTwo[4] . "</td>";
     echo "<td>" . $rowTwo[5] . "</td>";
     echo "</tr>";
-    echo "</table></div>";
   }
+  echo "</table></div>";
 
   echo "
   <p><a href=createPet.php>Create a new pet</a></p>";
