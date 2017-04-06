@@ -120,7 +120,7 @@ if(isset($_GET['submit']))
 		echo "<div class='col-md-5'>
     <h2>Received bids</h2>";
 
-		$query = "SELECT b.petownerid, p.name, p.breed, b.fromDate, b.toDate, b.price FROM Bids b INNER JOIN Pets p ON p.owner = b.petownerid WHERE b.caretakerid='$userid'";
+		$query = "SELECT b.petownerid, p.name, p.breed, b.fromDate, b.toDate, b.price FROM Bids b INNER JOIN Pets p ON p.owner = b.petownerid AND b.petid = p.petid WHERE b.caretakerid='$userid'";
 
 		$result = pg_query($query) or die('Query failed: ' . pg_last_error());
 
