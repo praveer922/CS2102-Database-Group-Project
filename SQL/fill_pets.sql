@@ -1,5 +1,5 @@
-INSERT INTO Pets(owner, name, age, breed, gender, description) values ('xiexin94', 'Max', 5, 'Golden Retreiver', 'Male', 'Friendly, tame');
 INSERT INTO Pets(owner, name, age, breed, gender, description) values ('huangran94', 'Bailey', 3, 'German Shepherd', 'Male', 'Quiet, tame');
+INSERT INTO Pets(owner, name, age, breed, gender, description) values ('xiexin94', 'Max', 5, 'Golden Retreiver', 'Male', 'Friendly, tame');
 INSERT INTO Pets(owner, name, age, breed, gender, description) values ('gohengchye94', 'Charlie', 7, 'Basset Hound', 'Male', 'Loud, aggresive');
 INSERT INTO Pets(owner, name, age, breed, gender, description) values ('gohhuiying94', 'Buddy', 12, 'Great Dane', 'Male', 'Timid, calm');
 INSERT INTO Pets(owner, name, age, breed, gender, description) values ('dingkuanchong94', 'Bella', 4, 'Bulldog', 'Female', 'Excited, playful');
