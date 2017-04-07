@@ -47,7 +47,9 @@ if(isset($_GET['submit']))
     window.location.href='pet-portal.php'; </script>";
     pg_close();
 
-} elseif(!isset($_GET['user'])) {
+}
+
+if(!isset($_GET['user'])) {  /** SET get user to session user if get is not set **/
   if(isset($_SESSION['login_user'])) {
     $_GET['user'] = $_SESSION['login_user'];
   } else {
@@ -74,8 +76,7 @@ if(isset($_GET['submit']))
   <p><strong>Address:</strong> ". $rowOne[2] ."</p>
   <p><strong>Description:</strong> ". $rowOne[3] ."</p>";
   
-  if($_GET['user'] == $_SESSION['login_user']) 
-  {
+  
   echo "<p><strong>Your Pets:</strong></p>";
   $queryTwo = "SELECT p.petid, p.name, p.age, p.breed, p.gender, p.description FROM Pets p WHERE p.owner='$userid'";
   $resultTwo = pg_query($queryTwo) or die('Query failed: ' . pg_last_error());
@@ -101,12 +102,16 @@ if(isset($_GET['submit']))
   }
   echo "</table></div>";
 
+  if($_GET['user'] == $_SESSION['login_user']) 
+  {
   echo "
-  <p><a href=createPet.php>Create a new pet</a></p>";
-}
+  <p><a href='createPet.php' class='btn btn-default btn-md'>Create a new pet</a></p>";
+  }
+
 
   echo "</div></div>";
 
+  /**HIGHEST BID **/
   $today = date("Y-m-d");
   $query = "SELECT price FROM Bids WHERE fromDate>='$today' AND caretakerid='$userid' AND price >= ALL(SELECT price FROM Bids WHERE fromDate>='$today' AND caretakerid='$userid')";
 
@@ -114,9 +119,76 @@ if(isset($_GET['submit']))
   if (pg_num_rows($result) > 0) {
     $row = pg_fetch_row($result);
     echo "<h4>The highest bid that " . $_GET['user'] . " has from today onwards is <strong>$" . $row[0] . "</strong>.</h4>
-    <h4>Bid a higher price to secure your petkeeper!</h4></div>";
+    <h4>Bid a higher price to secure your petkeeper!</h4>";
   }
 
+  /** BIDDING FORM **/
+    if($_GET['user'] != $_SESSION['login_user'])
+    {
+
+    echo"
+    <h2>Place your bid for ". $userid . " to take care of your pet!</h2>
+    <div class='panel panel-default'>
+    <div class='panel-body'>";
+    
+    echo"
+    <form action=\"profile.php\" method=\"get\">
+      Your pet's PetID and Name: <select name=\"PetID\"> <option value=\"\">--Your pet's ID and Name--</option>";
+
+      $query = "SELECT petid, name FROM Pets WHERE owner='".$_SESSION['login_user']."'";
+      $result = pg_query($query) or die('Query failed: ' . pg_last_error());
+      while($line = pg_fetch_array($result, null, PGSQL_ASSOC)){
+        echo "<option value=\"" . $line["petid"] . " " . $line["name"] . "\">" . $line["petid"] . " " . $line["name"] . "</option><br>";
+      }
+
+    echo"
+      Start date: <input type=\"date\" name=\"startDate\" id=\"startDate\" required>
+      End date: <input type=\"date\" name=\"endDate\" id=\"endDate\" required>
+      Bid price: <input type=\"number\" name=\"price\" id=\"price\" step=0.01 min=0 required>
+      <input type=\"submit\" name=\"submit\" value=\"Place bid\">
+      <input type=\"text\" name=\"user\" value=".$_GET['user']." hidden>
+    </form>
+    </div>
+    </div></div>";
+  } else {  /** LOOKING AT YOUR OWN PROFILE **/
+
+    /** TABLE OF BIDS PLACED **/
+    echo "
+    <h2>Your placed bids</h2>";
+
+    $query = "SELECT b.caretakerid, p.name, p.breed, b.fromDate, b.toDate, b.price FROM Bids b INNER JOIN Pets p ON p.owner = b.petownerid AND b.petid = p.petid WHERE b.petownerid='$userid'";
+
+    $result = pg_query($query) or die('Query failed: ' . pg_last_error());
+
+    echo "<div class='panel panel-default'><table class='table table-striped table-hover table-bordered table-responsive'>
+          <tr>
+          <th>Caretaker</th>
+          <th>Pet Name</th>
+          <th>Pet Breed</th>
+          <th>From</th>
+          <th>To</th>
+          <th>Price</th>
+          </tr>";
+    while ($row = pg_fetch_row($result)){
+          echo "<tr>";
+          echo "<td><a href='/profile.php?user=" . $row[0] ."'>" . $row[0] . "</a></td>";
+          echo "<td>" . $row[1] . "</td>";
+          echo "<td>" . $row[2] . "</td>";
+          echo "<td>" . $row[3] . "</td>";
+          echo "<td>" . $row[4] . "</td>";
+          echo "<td>$" . $row[5] . "</td>";
+          echo "</tr>";
+    }
+    echo "</table></div>
+    </div>";
+
+
+
+    pg_free_result($result);
+  }
+
+
+    /** TABLE OF RECEIVED BIDS **/
 		echo "<div class='col-md-5'>
     <h2>Received bids</h2>";
 
@@ -135,7 +207,7 @@ if(isset($_GET['submit']))
 			    </tr>";
 		while ($row = pg_fetch_row($result)){
 		      echo "<tr>";
-		      echo "<td>" . $row[0] . "</td>";
+		      echo "<td><a href='/profile.php?user=" . $row[0] ."'>" . $row[0] . "</a></td>";
 		      echo "<td>" . $row[1] . "</td>";
 		      echo "<td>" . $row[2] . "</td>";
 		      echo "<td>" . $row[3] . "</td>";
@@ -150,41 +222,6 @@ if(isset($_GET['submit']))
 
 
 		pg_free_result($result);
-
-    if($_GET['user'] != $_SESSION['login_user'])
-    {
-
-    echo"
-    <div class='row'>
-    <div class='col-md-5 col-md-offset-1'>
-    <h2>Place your bid for ". $userid . " to take care of your pet!</h2>
-    <div class='panel panel-default'>
-    <div class='panel-body'>";
-    
-    echo"
-    <form action=\"profile.php\" method=\"get\">
-      Your pet's unique PetID: <select name=\"PetID\"> <option value=\"\">--Your pet's ID--</option>";
-
-      $query = "SELECT petid FROM Pets WHERE owner='".$_SESSION['login_user']."'";
-      $result = pg_query($query) or die('Query failed: ' . pg_last_error());
-      while($line = pg_fetch_array($result, null, PGSQL_ASSOC)){
-           foreach ($line as $col_value) {
-              echo "<option value=\"".$col_value."\">".$col_value."</option><br>";
-          }
-      }
-
-    echo"
-      Start date: <input type=\"date\" name=\"startDate\" id=\"startDate\" required>
-      End date: <input type=\"date\" name=\"endDate\" id=\"endDate\" required>
-      Bid price: <input type=\"number\" name=\"price\" id=\"price\" step=0.01 min=0 required>
-      <input type=\"submit\" name=\"submit\" value=\"Place bid\">
-      <input type=\"text\" name=\"user\" value=".$_GET['user']." hidden>
-    </form>
-    </div>
-    </div>
-    </div>
-    </div>";
-  }
 
 ?>
 
