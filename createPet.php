@@ -35,14 +35,10 @@ $dbconn = pg_connect("postgres://plwneqlk:-2HZ6tyCgzUN7vQTK8m0FBkUlQOZ6brW@babar
 
 if(isset($_POST['submit'])) 
 {
-	$query = "SELECT * FROM pets ORDER BY petid DESC LIMIT 1";
-	$result = pg_query($query) or die('Query failed: ' . pg_last_error());
-	$row = pg_fetch_row($result);
-	$petID = ($row[0]+1);
-		
+
 	$owner = $_SESSION['login_user'];
 
-	$query = "INSERT INTO Pets VALUES ('".$petID."','".$owner."','".($_POST['name'])."', '".$_POST['age']."', '".$_POST['breed']."', '"
+	$query = "INSERT INTO Pets (owner, name, age, breed, gender, description) VALUES ('".$owner."','".($_POST['name'])."', '".$_POST['age']."', '".$_POST['breed']."', '"
 		.$_POST['gender']."','".$_POST['description']."');";
 
 	$result = pg_query($query); 
@@ -54,15 +50,16 @@ if(isset($_POST['submit']))
         echo "<script> alert('Your pet ".$_POST['name']." has been successfully registered.'); 
         window.location.href='profile.php'; </script>";
         pg_close(); 
+
+
 }
 ?>
-
    
     	<h1>Register new pet</h1>
         <form action="createPet.php" method="post"> 
 		
             <p>Name: </p>  <input type="text" name="name" size="40" length="40"><BR> 
-            <p>Age: </p>  <input type="number" name="age" size="40" length="40"><BR> 
+            <p>Age: </p>  <input type="number" name="age" min = 0 size="40" length="40"><BR> 
             <p>Breed: </p> <input type="text" name="breed" size="40" length="60"><BR> 
             <p>Gender: </p>
             <input type="radio" name="gender" value="Male"> Male<br>
