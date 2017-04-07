@@ -29,26 +29,6 @@ $dbconn = pg_connect("postgres://plwneqlk:-2HZ6tyCgzUN7vQTK8m0FBkUlQOZ6brW@babar
 
 <?php
 
-if(isset($_GET['submitedit'])) /** PLACES BID if edit bid button is pressed **/
-{
-
-  $query = "UPDATE Bids SET petownerid= '".$_SESSION['login_user']."', caretakerid='".$_GET['user']."', petid'".$_GET['PetID']."', fromDate='".$_GET['startDate']."', toDate='"
-  .$_GET['endDate']."', price='".$_GET['price']."' WHERE petownerid='" .$_GET['petownerid']. "' AND caretakerid='" .$_GET['caretakerid']. "' AND petid='". $_GET['petid']. "'";
-
-  $result = pg_query($query);
-    if (!$result) {
-      $errormessage = pg_last_error();
-      echo "<script> alert('You have failed to update your bid');
-      window.location.href='profile.php'; </script>";
-      pg_close();
-      exit();
-    }
-    echo "<script> alert('You have successfully updated your bid.');
-    window.location.href='profile.php'; </script>";
-    pg_close();
-
-}
-
 if(isset($_GET['submit'])) /** PLACES BID if bid button is pressed **/
 {
 

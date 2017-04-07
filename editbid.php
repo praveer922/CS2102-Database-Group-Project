@@ -30,6 +30,27 @@ session_start();
    <body>
    <div class="container">
   <?php
+
+  if(isset($_GET['submitedit'])) /** PLACES BID if edit bid button is pressed **/
+{
+
+  $query = "UPDATE Bids SET petownerid='".$_SESSION['login_user']."', caretakerid='".$_GET['user']."', petid='".$_GET['PetID']."', fromDate='".$_GET['startDate']."', toDate='"
+  .$_GET['endDate']."', price='".$_GET['price']."' WHERE petownerid='" .$_GET['petownerid']. "' AND caretakerid='" .$_GET['caretakerid']. "' AND petid='". $_GET['petid']. "'";
+
+  $result = pg_query($query);
+    if (!$result) {
+      $errormessage = pg_last_error();
+      echo "<script> alert('You have failed to update your bid');
+      window.location.href='profile.php'; </script>";
+      pg_close();
+      exit();
+    }
+    echo "<script> alert('You have successfully updated your bid.');
+    window.location.href='profile.php'; </script>";
+    pg_close();
+
+}
+
   $petownderid = $_GET['petownerid'];
   $caretakerid = $_GET['caretakerid'];
   $petid = $_GET['petid'];
@@ -41,13 +62,13 @@ session_start();
   <div class='panel-body'>";
 
   echo"
-  <form action='profile.php?petownerid=$petownerid&caretakerid=$caretakerid&petid=$petid' method=\"get\">
+  <form action='editbid.php' method=\"get\">
     Your pet's PetID and Name: <select name=\"PetID\" class='form-control' style='max-width:40%; margin-bottom:12px;'> <option class='form-control' value=\"\">--Your pet's ID and Name--</option>";
 
     $query = "SELECT petid, name FROM Pets WHERE owner='".$_SESSION['login_user']."'";
     $result = pg_query($query) or die('Query failed: ' . pg_last_error());
     while($line = pg_fetch_array($result, null, PGSQL_ASSOC)){
-      echo "<option class='form-control' value=\"" . $line["petid"] . " " . $line["name"] . "\">" . $line["petid"] . " " . $line["name"] . "</option></select>";
+      echo "<option class='form-control' value=\"" . $line["petid"] . "\">" . $line["petid"] . " " . $line["name"] . "</option></select>";
     }
 
   echo"
