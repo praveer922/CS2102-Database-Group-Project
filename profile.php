@@ -76,8 +76,7 @@ if(!isset($_GET['user'])) {  /** SET get user to session user if get is not set 
   <p><strong>Address:</strong> ". $rowOne[2] ."</p>
   <p><strong>Description:</strong> ". $rowOne[3] ."</p>";
   
-  if($_GET['user'] == $_SESSION['login_user']) 
-  {
+  
   echo "<p><strong>Your Pets:</strong></p>";
   $queryTwo = "SELECT p.petid, p.name, p.age, p.breed, p.gender, p.description FROM Pets p WHERE p.owner='$userid'";
   $resultTwo = pg_query($queryTwo) or die('Query failed: ' . pg_last_error());
@@ -103,9 +102,12 @@ if(!isset($_GET['user'])) {  /** SET get user to session user if get is not set 
   }
   echo "</table></div>";
 
+  if($_GET['user'] == $_SESSION['login_user']) 
+  {
   echo "
   <p><a href='createPet.php' class='btn btn-default btn-md'>Create a new pet</a></p>";
-}
+  }
+
 
   echo "</div></div>";
 
@@ -169,7 +171,7 @@ if(!isset($_GET['user'])) {  /** SET get user to session user if get is not set 
           </tr>";
     while ($row = pg_fetch_row($result)){
           echo "<tr>";
-          echo "<td>" . $row[0] . "</td>";
+          echo "<td><a href='/profile.php?user=" . $row[0] ."'>" . $row[0] . "</a></td>";
           echo "<td>" . $row[1] . "</td>";
           echo "<td>" . $row[2] . "</td>";
           echo "<td>" . $row[3] . "</td>";
@@ -205,7 +207,7 @@ if(!isset($_GET['user'])) {  /** SET get user to session user if get is not set 
 			    </tr>";
 		while ($row = pg_fetch_row($result)){
 		      echo "<tr>";
-		      echo "<td>" . $row[0] . "</td>";
+		      echo "<td><a href='/profile.php?user=" . $row[0] ."'>" . $row[0] . "</a></td>";
 		      echo "<td>" . $row[1] . "</td>";
 		      echo "<td>" . $row[2] . "</td>";
 		      echo "<td>" . $row[3] . "</td>";
