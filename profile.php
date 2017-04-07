@@ -163,14 +163,12 @@ if(isset($_GET['submit']))
     
     echo"
     <form action=\"profile.php\" method=\"get\">
-      Your pet's unique PetID: <select name=\"PetID\"> <option value=\"\">--Your pet's ID--</option>";
+      Your pet's PetID and Name: <select name=\"PetID\"> <option value=\"\">--Your pet's ID and Name--</option>";
 
-      $query = "SELECT petid FROM Pets WHERE owner='".$_SESSION['login_user']."'";
+      $query = "SELECT petid, name FROM Pets WHERE owner='".$_SESSION['login_user']."'";
       $result = pg_query($query) or die('Query failed: ' . pg_last_error());
       while($line = pg_fetch_array($result, null, PGSQL_ASSOC)){
-           foreach ($line as $col_value) {
-              echo "<option value=\"".$col_value."\">".$col_value."</option><br>";
-          }
+        echo "<option value=\"" . $line["petid"] . " " . $line["name"] . "\">" . $line["petid"] . " " . $line["name"] . "</option><br>";
       }
 
     echo"

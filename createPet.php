@@ -4,7 +4,7 @@ session_start();
 
 <html>
 <head>
-  <title>Register new pets</title>
+  <title>Register new pet</title>
   <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
   <link href="http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
@@ -51,11 +51,9 @@ if(isset($_POST['submit']))
             echo "Error with query: " . $errormessage; 
             exit(); 
         } 
-        echo "<script> alert('You have successfully registered, ".$_POST['name'].".'); 
+        echo "<script> alert('Your pet ".$_POST['name']." has been successfully registered.'); 
         window.location.href='profile.php'; </script>";
         pg_close(); 
-
-
 }
 ?>
 
