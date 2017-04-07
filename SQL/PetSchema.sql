@@ -65,7 +65,11 @@ FROM Users
 WHERE UPPER(address) LIKE UPPER('%Pasir Ris%') AND (isA = 'caretaker' OR isA = 'both');
 
 CREATE TABLE bidUpdateHistory (
-userid VARCHAR(32) NOT NULL REFERENCES Users(userid) ON UPDATE CASCADE ON DELETE CASCADE,
+petownerid VARCHAR(32) NOT NULL REFERENCES Users(userid) ON UPDATE CASCADE ON DELETE CASCADE,
+caretakerid VARCHAR(32) NOT NULL REFERENCES Users(userid) ON UPDATE CASCADE ON DELETE CASCADE,
+lastpetid INTEGER NOT NULL REFERENCES Pets(petid) ON UPDATE CASCADE ON DELETE CASCADE,
+lastfromdate DATE NOT NULL,
+lasttodate DATE NOT NULL,
 lastprice NUMERIC(7,2) NOT NULL,
 changed_on DATE NOT NULL DEFAULT CURRENT_DATE
 );
@@ -73,8 +77,8 @@ changed_on DATE NOT NULL DEFAULT CURRENT_DATE
 CREATE OR REPLACE FUNCTION logBidUpdated()
 RETURNS TRIGGER AS $$
 BEGIN
- INSERT INTO bidUpdateHistory (userid, lastprice)
- VALUES (OLD.petownerid, OLD.price);
+ INSERT INTO bidUpdateHistory (petownerid, caretakerid, lastpetid, lastfromdate, lasttodate, lastprice)
+ VALUES (OLD.petownerid, OLD.caretakerid, OLD.petid, OLD.fromDate, OLD.toDate, OLD.price);
 RETURN NEW;
 END; $$
 LANGUAGE PLPGSQL;

@@ -29,7 +29,7 @@ $dbconn = pg_connect("postgres://plwneqlk:-2HZ6tyCgzUN7vQTK8m0FBkUlQOZ6brW@babar
 
 <?php
 
-if(isset($_GET['submit']))
+if(isset($_GET['submit'])) /** PLACES BID if bid button is pressed **/
 {
 
   $query = "INSERT INTO Bids VALUES ('".$_SESSION['login_user']."', '".$_GET['user']."', '".$_GET['PetID']."', '".$_GET['startDate']."', '"
@@ -39,12 +39,12 @@ if(isset($_GET['submit']))
     if (!$result) {
       $errormessage = pg_last_error();
       echo "<script> alert('You have failed to bid');
-      window.location.href='pet-portal.php'; </script>";
+      window.location.href='profile.php'; </script>";
       pg_close();
       exit();
     }
     echo "<script> alert('You have successfully bidded');
-    window.location.href='pet-portal.php'; </script>";
+    window.location.href='profile.php'; </script>";
     pg_close();
 
 }
