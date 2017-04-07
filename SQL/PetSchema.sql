@@ -1,3 +1,24 @@
+CREATE TABLE bidUpdateHistory (
+userid VARCHAR(32) NOT NULL,
+lastprice NUMERIC(7,2) NOT NULL,
+changed_on DATE NOT NULL DEFAULT CURRENT_DATE
+);
+
+CREATE TRIGGER bidUpdated
+AFTER UPDATE
+ON Bids
+FOR EACH ROW
+EXECUTE PROCEDURE logBidUpdated();
+
+CREATE FUNCTION logBidUpdated()
+RETURNS TRIGGER AS $$
+BEGIN
+ INSERT INTO bidUpdateHistory (userid, lastprice)
+ VALUES (OLD.petownerid, OLD.price);
+RETURN NEW;
+END; $$
+LANGUAGE PLPGSQL;
+
 CREATE TABLE Users (
 userid VARCHAR(32) PRIMARY KEY,
 password VARCHAR(32) NOT NULL,
