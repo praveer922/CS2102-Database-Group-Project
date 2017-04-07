@@ -141,7 +141,7 @@ if(!isset($_GET['user'])) {  /** SET get user to session user if get is not set 
       $query = "SELECT petid, name FROM Pets WHERE owner='".$_SESSION['login_user']."'";
       $result = pg_query($query) or die('Query failed: ' . pg_last_error());
       while($line = pg_fetch_array($result, null, PGSQL_ASSOC)){
-        echo "<option class='form-control' value=\"" . $line["petid"] . " " . $line["name"] . "\">" . $line["petid"] . " " . $line["name"] . "</option></select>";
+        echo "<option class='form-control' value=\"" . $line["petid"] . "\">" . $line["petid"] . " " . $line["name"] . "</option></select>";
       }
 
     echo"
