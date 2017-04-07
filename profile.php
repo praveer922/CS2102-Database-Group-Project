@@ -75,9 +75,9 @@ if(!isset($_GET['user'])) {  /** SET get user to session user if get is not set 
   <p><strong>Email:</strong> ". $rowOne[1] ."</p>
   <p><strong>Address:</strong> ". $rowOne[2] ."</p>
   <p><strong>Description:</strong> ". $rowOne[3] ."</p>";
-  
-  
-  echo "<p><strong>Your Pets:</strong></p>";
+
+
+  echo "<p><strong>Pets:</strong></p>";
   $queryTwo = "SELECT p.petid, p.name, p.age, p.breed, p.gender, p.description FROM Pets p WHERE p.owner='$userid'";
   $resultTwo = pg_query($queryTwo) or die('Query failed: ' . pg_last_error());
 
@@ -102,7 +102,7 @@ if(!isset($_GET['user'])) {  /** SET get user to session user if get is not set 
   }
   echo "</table></div>";
 
-  if($_GET['user'] == $_SESSION['login_user']) 
+  if($_GET['user'] == $_SESSION['login_user'])
   {
   echo "
   <p><a href='createPet.php' class='btn btn-default btn-md'>Create a new pet</a></p>";
@@ -118,8 +118,11 @@ if(!isset($_GET['user'])) {  /** SET get user to session user if get is not set 
   $result = pg_query($query) or die('Query failed: ' . pg_last_error());
   if (pg_num_rows($result) > 0) {
     $row = pg_fetch_row($result);
-    echo "<h4>The highest bid that " . $_GET['user'] . " has from today onwards is <strong>$" . $row[0] . "</strong>.</h4>
+    $highestbid = $row[0];
+    if ($_GET['user'] != $_SESSION['login_user']) { //not looking at your own profile
+    echo "<h4>The highest bid that " . $_GET['user'] . " has from today onwards is <strong>$" . $highestbid . "</strong>.</h4>
     <h4>Bid a higher price to secure your petkeeper!</h4>";
+    }
   }
 
   /** BIDDING FORM **/
@@ -130,7 +133,7 @@ if(!isset($_GET['user'])) {  /** SET get user to session user if get is not set 
     <h2>Place your bid for ". $userid . " to take care of your pet!</h2>
     <div class='panel panel-default'>
     <div class='panel-body'>";
-    
+
     echo"
     <form action=\"profile.php\" method=\"get\">
       Your pet's PetID and Name: <select name=\"PetID\"> <option value=\"\">--Your pet's ID and Name--</option>";
@@ -177,8 +180,9 @@ if(!isset($_GET['user'])) {  /** SET get user to session user if get is not set 
           echo "<td>" . $row[4] . "</td>";
           echo "</tr>";
     }
-    echo "</table></div>
-    </div>";
+    echo "</table></div>";
+
+    echo "</div>";
 
 
 
@@ -213,8 +217,11 @@ if(!isset($_GET['user'])) {  /** SET get user to session user if get is not set 
 		      echo "<td>$" . $row[5] . "</td>";
 		      echo "</tr>";
 		}
-		echo "</table></div>
-    </div>
+		echo "</table></div>";
+    if($_GET['user'] == $_SESSION['login_user']) {//looking at your own profile
+      echo "<h4>The highest bid placed for you from today onwards is <strong>$" . $highestbid . "</strong>.</h4>";
+    }
+    echo "</div>
     </div>";
 
 
