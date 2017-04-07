@@ -120,8 +120,8 @@ if(!isset($_GET['user'])) {  /** SET get user to session user if get is not set 
     $row = pg_fetch_row($result);
     $highestbid = $row[0];
     if ($_GET['user'] != $_SESSION['login_user']) { //not looking at your own profile
-    echo "<h4>The highest bid that " . $_GET['user'] . " has from today onwards is <strong>$" . $highestbid . "</strong>.</h4>
-    <h4>Bid a higher price to secure your petkeeper!</h4>";
+    echo "<h2>Place Bid</h2><hr><h4>The highest bid that " . $_GET['user'] . " has from today onwards is <strong>$" . $highestbid . "</strong>.</h4>
+    <h4>Bid a higher price to secure your petkeeper!</h4><hr>";
     }
   }
 
@@ -130,25 +130,25 @@ if(!isset($_GET['user'])) {  /** SET get user to session user if get is not set 
     {
 
     echo"
-    <h2>Place your bid for ". $userid . " to take care of your pet!</h2>
     <div class='panel panel-default'>
+    <div class='panel-heading'>Place your bid for ". $userid . " to take care of your pet!</div>
     <div class='panel-body'>";
 
     echo"
     <form action=\"profile.php\" method=\"get\">
-      Your pet's PetID and Name: <select name=\"PetID\"> <option value=\"\">--Your pet's ID and Name--</option>";
+      Your pet's PetID and Name: <select name=\"PetID\" class='form-control' style='max-width:40%; margin-bottom:12px;'> <option class='form-control' value=\"\">--Your pet's ID and Name--</option>";
 
       $query = "SELECT petid, name FROM Pets WHERE owner='".$_SESSION['login_user']."'";
       $result = pg_query($query) or die('Query failed: ' . pg_last_error());
       while($line = pg_fetch_array($result, null, PGSQL_ASSOC)){
-        echo "<option value=\"" . $line["petid"] . " " . $line["name"] . "\">" . $line["petid"] . " " . $line["name"] . "</option><br>";
+        echo "<option class='form-control' value=\"" . $line["petid"] . " " . $line["name"] . "\">" . $line["petid"] . " " . $line["name"] . "</option></select>";
       }
 
     echo"
-      Start date: <input type=\"date\" name=\"startDate\" id=\"startDate\" required>
-      End date: <input type=\"date\" name=\"endDate\" id=\"endDate\" required>
-      Bid price: <input type=\"number\" name=\"price\" id=\"price\" step=0.01 min=0 required>
-      <input type=\"submit\" name=\"submit\" value=\"Place bid\">
+      Start date: <input class='form-control' style='max-width:50%; margin-bottom:8px;' type=\"date\" name=\"startDate\" id=\"startDate\" required>
+      End date: <input class='form-control' style='max-width:50%;margin-bottom:8px;' type=\"date\" name=\"endDate\" id=\"endDate\" required>
+      Bid price: <input class='form-control' style='max-width:50%;margin-bottom:8px;' type=\"number\" name=\"price\" id=\"price\" step=0.01 min=0 required >
+      <input type=\"submit\" name=\"submit\" value=\"Place bid\" class='btn btn-default btn-md'>
       <input type=\"text\" name=\"user\" value=".$_GET['user']." hidden>
     </form>
     </div>
