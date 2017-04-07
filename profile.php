@@ -155,11 +155,21 @@ if(!isset($_GET['user'])) {  /** SET get user to session user if get is not set 
     </div></div>";
   } else {  /** LOOKING AT YOUR OWN PROFILE **/
 
+    /** DELETE BID if delete button pressed **/
+    if(isset($_GET['removebid'])) {
+      $petownderid = $_GET['petownerid'];
+      $caretakerid = $_GET['caretakerid'];
+      $petid = $_GET['petid'];
+      $query = "DELETE FROM Bids b WHERE b.petownerid='$petownderid' AND b.caretakerid='$caretakerid' AND b.petid = $petid";
+
+      $result = pg_query($query) or die('Query failed: ' . pg_last_error());
+    }
+
     /** TABLE OF BIDS PLACED **/
     echo "
     <h2>Your placed bids</h2>";
 
-    $query = "SELECT b.caretakerid, p.name, b.fromDate, b.toDate, b.price FROM Bids b INNER JOIN Pets p ON b.petid = p.petid WHERE b.petownerid='$userid'";
+    $query = "SELECT b.caretakerid, p.name, b.fromDate, b.toDate, b.price, b.petownerid, b.petid FROM Bids b INNER JOIN Pets p ON b.petid = p.petid WHERE b.petownerid='$userid'";
 
     $result = pg_query($query) or die('Query failed: ' . pg_last_error());
 
@@ -170,6 +180,7 @@ if(!isset($_GET['user'])) {  /** SET get user to session user if get is not set 
           <th>From</th>
           <th>To</th>
           <th>Price</th>
+          <th>Actions</th>
           </tr>";
     while ($row = pg_fetch_row($result)){
           echo "<tr>";
@@ -178,6 +189,7 @@ if(!isset($_GET['user'])) {  /** SET get user to session user if get is not set 
           echo "<td>" . $row[2] . "</td>";
           echo "<td>" . $row[3] . "</td>";
           echo "<td>" . $row[4] . "</td>";
+          echo "<td><a href='/profile.php?removebid=true&petownerid=" . $row[5] . "&caretakerid=" . $row[0] . "&petid=" . $row[6] . "' class='btn btn-default btn-sm'>Delete</a></td>";
           echo "</tr>";
     }
     echo "</table></div>";
