@@ -1,24 +1,3 @@
-CREATE TABLE bidUpdateHistory (
-userid VARCHAR(32) NOT NULL,
-lastprice NUMERIC(7,2) NOT NULL,
-changed_on DATE NOT NULL DEFAULT CURRENT_DATE
-);
-
-CREATE TRIGGER bidUpdated
-AFTER UPDATE
-ON Bids
-FOR EACH ROW
-EXECUTE PROCEDURE logBidUpdated();
-
-CREATE FUNCTION logBidUpdated()
-RETURNS TRIGGER AS $$
-BEGIN
- INSERT INTO bidUpdateHistory (userid, lastprice)
- VALUES (OLD.petownerid, OLD.price);
-RETURN NEW;
-END; $$
-LANGUAGE PLPGSQL;
-
 CREATE TABLE Users (
 userid VARCHAR(32) PRIMARY KEY,
 password VARCHAR(32) NOT NULL,
@@ -84,3 +63,24 @@ CREATE VIEW Pasir_ris_caretakers AS
 SELECT userid, password, name, email, address, description
 FROM Users
 WHERE UPPER(address) LIKE UPPER('%Pasir Ris%') AND (isA = 'caretaker' OR isA = 'both');
+
+CREATE TABLE bidUpdateHistory (
+userid VARCHAR(32) NOT NULL REFERENCES Users(userid) ON UPDATE CASCADE ON DELETE CASCADE,
+lastprice NUMERIC(7,2) NOT NULL,
+changed_on DATE NOT NULL DEFAULT CURRENT_DATE
+);
+
+CREATE OR REPLACE FUNCTION logBidUpdated()
+RETURNS TRIGGER AS $$
+BEGIN
+ INSERT INTO bidUpdateHistory (userid, lastprice)
+ VALUES (OLD.petownerid, OLD.price);
+RETURN NEW;
+END; $$
+LANGUAGE PLPGSQL;
+
+CREATE TRIGGER bidUpdated
+AFTER UPDATE
+ON Bids
+FOR EACH ROW
+EXECUTE PROCEDURE logBidUpdated();

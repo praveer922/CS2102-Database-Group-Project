@@ -51,11 +51,9 @@ if(isset($_POST['submit']))
             echo "Error with query: " . $errormessage; 
             exit(); 
         } 
-        echo "<script> alert('You have successfully registered, ".$_POST['name'].".'); 
+        echo "<script> alert('Your pet ".$_POST['name']." has successfully registered.'); 
         window.location.href='profile.php'; </script>";
         pg_close(); 
-
-
 }
 ?>
 
