@@ -33,28 +33,33 @@ session_start();
 
   if(isset($_GET['submitedit'])) /** PLACES BID if edit bid button is pressed **/
 {
+  $petownerid = $_GET['petownerid'];
+  $caretakerid = $_GET['caretakerid'];
+  $petid = $_GET['petid'];
+  $startDate = $_GET['startDate'];
+  $endDate = $_GET['endDate'];
+  $price = $_GET['price'];
 
-  $query = "UPDATE Bids SET petownerid='".$_SESSION['login_user']."', caretakerid='".$_GET['user']."', petid='".$_GET['PetID']."', fromDate='".$_GET['startDate']."', toDate='"
-  .$_GET['endDate']."', price='".$_GET['price']."' WHERE petownerid='" .$_GET['petownerid']. "' AND caretakerid='" .$_GET['caretakerid']. "' AND petid='". $_GET['petid']. "'";
+  echo $startDate . " " . $endDate . " " . $price . " " . $petownerid . " " . $caretakerid . " " . $petid;
+
+  $query = "UPDATE Bids SET fromDate='$startDate', toDate='$endDate', price='$price' 
+  WHERE petownerid='$petownerid' AND caretakerid='$caretakerid' AND petid='$petid'";
 
   $result = pg_query($query);
     if (!$result) {
       $errormessage = pg_last_error();
-      echo "<script> alert('You have failed to update your bid');
+      echo "<script> alert('You have failed to update your bid')</script>";
+    } else {
+      echo "<script> alert('You have successfully updated your bid.');
       window.location.href='profile.php'; </script>";
       pg_close();
-      exit();
     }
-    echo "<script> alert('You have successfully updated your bid.');
-    window.location.href='profile.php'; </script>";
-    pg_close();
-
 }
 
-  $petownderid = $_GET['petownerid'];
+  $petownerid = $_GET['petownerid'];
   $caretakerid = $_GET['caretakerid'];
   $petid = $_GET['petid'];
-
+  echo $petownerid . " " . $caretakerid . " " . $petid;
   echo "<h2>Edit your bid</h2><hr>
 
   <div class='panel panel-default'>
@@ -77,6 +82,9 @@ session_start();
     Bid price: <input class='form-control' style='max-width:50%;margin-bottom:8px;' type=\"number\" name=\"price\" id=\"price\" step=0.01 min=0 required >
     <input type=\"submit\" name=\"submitedit\" value=\"Edit bid\" class='btn btn-default btn-md'>
     <input type=\"text\" name=\"user\" value=".$_SESSION['login_user']." hidden>
+    <input type=\"text\" name=\"petownerid\" value=".$_GET['petownerid']." hidden>
+    <input type=\"text\" name=\"caretakerid\" value=".$_GET['caretakerid']." hidden>
+    <input type=\"text\" name=\"petid\" value=".$_GET['petid']." hidden>
   </form>
   </div>
   </div>";
