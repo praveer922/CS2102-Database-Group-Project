@@ -156,7 +156,7 @@ if(!isset($_GET['user'])) {  /** SET get user to session user if get is not set 
     echo "
     <h2>Your placed bids</h2>";
 
-    $query = "SELECT b.caretakerid, p.name, p.breed, b.fromDate, b.toDate, b.price FROM Bids b INNER JOIN Pets p ON p.owner = b.petownerid AND b.petid = p.petid WHERE b.petownerid='$userid'";
+    $query = "SELECT b.caretakerid, p.name, b.fromDate, b.toDate, b.price FROM Bids b INNER JOIN Pets p ON b.petid = p.petid WHERE b.petownerid='$userid'";
 
     $result = pg_query($query) or die('Query failed: ' . pg_last_error());
 
@@ -164,7 +164,6 @@ if(!isset($_GET['user'])) {  /** SET get user to session user if get is not set 
           <tr>
           <th>Caretaker</th>
           <th>Pet Name</th>
-          <th>Pet Breed</th>
           <th>From</th>
           <th>To</th>
           <th>Price</th>
@@ -176,7 +175,6 @@ if(!isset($_GET['user'])) {  /** SET get user to session user if get is not set 
           echo "<td>" . $row[2] . "</td>";
           echo "<td>" . $row[3] . "</td>";
           echo "<td>" . $row[4] . "</td>";
-          echo "<td>$" . $row[5] . "</td>";
           echo "</tr>";
     }
     echo "</table></div>
