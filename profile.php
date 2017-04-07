@@ -189,7 +189,7 @@ if(!isset($_GET['user'])) {  /** SET get user to session user if get is not set 
           echo "<td>" . $row[2] . "</td>";
           echo "<td>" . $row[3] . "</td>";
           echo "<td>" . $row[4] . "</td>";
-          echo "<td><a href='/profile.php?removebid=true&petownerid=" . $row[5] . "&caretakerid=" . $row[0] . "&petid=" . $row[6] . "' class='btn btn-default btn-sm'>Delete</a></td>";
+          echo "<td><a href='/editbid.php?petownerid=" . $row[5] . "&caretakerid=" . $row[0] . "&petid=" . $row[6] . "' class='btn btn-default btn-sm'>Edit</a>  <a href='/profile.php?removebid=true&petownerid=" . $row[5] . "&caretakerid=" . $row[0] . "&petid=" . $row[6] . "' class='btn btn-default btn-sm'>Delete</a></td>";
           echo "</tr>";
     }
     echo "</table></div>";
